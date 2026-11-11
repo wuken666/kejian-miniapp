@@ -1,0 +1,22 @@
+<view class="page-shell profile-page">
+  <view wx:if="{{error}}" class="profile-error"><text>账号信息加载失败</text><button bindtap="login">重试登录</button></view>
+  <form wx:if="{{showEditor}}" bindsubmit="saveProfile">
+    <view wx:if="{{firstUse}}" class="profile-edit-heading">认识一下，老师</view>
+    <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="chooseAvatar" disabled="{{saving}}" aria-label="选择微信头像"><image wx:if="{{formAvatar}}" src="{{formAvatar}}" mode="aspectFill" /><text wx:else>{{profileInitial}}</text><view class="avatar-edit"><image src="/assets/icons/edit-white.png" /></view></button>
+    <text class="avatar-caption">选择头像</text>
+    <view class="name-field"><text>老师姓名</text><input name="teacherName" type="nickname" value="{{formName}}" maxlength="50" placeholder="使用微信昵称或填写姓名" disabled="{{saving}}" /></view>
+    <button class="profile-save" form-type="submit" loading="{{saving || avatarProcessing}}" disabled="{{saving || avatarProcessing}}">{{firstUse ? '保存并开始使用' : '保存资料'}}</button>
+    <view wx:if="{{!firstUse}}" role="button" class="edit-cancel" bindtap="closeEditor">取消</view>
+  </form>
+  <block wx:else>
+    <view class="profile-identity" role="button" bindtap="openEditor"><image class="profile-portrait" wx:if="{{avatarData}}" src="{{avatarData}}" mode="aspectFill" /><view wx:else class="profile-portrait initial">{{profileInitial}}</view><view class="identity-copy"><text>{{teacherName}}</text><text>个人信息</text></view><image class="row-arrow" src="/assets/icons/right-muted.png" /></view>
+    <text class="settings-heading">隐私与数据</text>
+    <view class="settings-row" role="button" bindtap="openPrivacy"><view class="setting-icon"><image src="/assets/icons/privacy-danger.png" /></view><text>隐私与安全</text><image class="row-arrow" src="/assets/icons/right-muted.png" /></view>
+    <view class="settings-row" role="button" bindtap="showDataManagement"><view class="setting-icon"><image src="/assets/icons/data-danger.png" /></view><text>数据管理</text><image class="row-arrow" src="/assets/icons/right-muted.png" /></view>
+    <text class="settings-heading">帮助与关于</text>
+    <view class="settings-row" role="button" bindtap="showHelp"><view class="setting-icon"><image src="/assets/icons/help-danger.png" /></view><text>帮助与反馈</text><image class="row-arrow" src="/assets/icons/right-muted.png" /></view>
+    <view class="settings-row" role="button" bindtap="showAbout"><view class="setting-icon"><image src="/assets/icons/info-danger.png" /></view><text>关于课见</text><image class="row-arrow" src="/assets/icons/right-muted.png" /></view>
+    <view wx:if="{{showLogout}}" class="profile-account-actions" role="button" bindtap="logout">退出登录</view>
+    <text class="profile-brand">课见 · 教师 AI 助手</text>
+  </block>
+</view>

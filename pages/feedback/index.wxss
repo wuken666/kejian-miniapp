@@ -1,0 +1,534 @@
+page { background: #fff; }
+.feedback-page { background: #fff; padding-top: 24rpx; }
+
+.student-switcher {
+  margin-bottom: 20rpx;
+}
+
+.feedback-student-scroll {
+  width: calc(100% + 32rpx);
+  margin: 0 -16rpx;
+  white-space: nowrap;
+}
+
+.feedback-student-list {
+  display: flex;
+  gap: 12rpx;
+  padding: 4rpx 16rpx 8rpx;
+}
+
+.feedback-student {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 108rpx;
+  height: 84rpx;
+  padding: 0;
+  border: 1rpx solid #dce4df;
+  border-radius: 14rpx;
+  background: #ffffff;
+  color: #66726c;
+  font-size: 23rpx;
+}
+
+.feedback-student > text:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: transparent;
+  color: #174e3e;
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+.feedback-student.active {
+  border-color: #a7ccbd;
+  background: #dff0e8;
+  color: #174e3e;
+  box-shadow: 0 8rpx 18rpx rgba(23,78,62,.08);
+}
+
+.feedback-student.active > text:first-child {
+  background: transparent;
+  color: #174e3e;
+}
+
+.feedback-student-name {
+  display: none;
+}
+
+.view-tabs {
+  display: flex;
+  gap: 8rpx;
+  margin-bottom: 24rpx;
+  padding: 6rpx;
+  border-radius: 8rpx;
+  background: #f0f3f1;
+}
+
+.growth-card{padding:28rpx}.growth-header{padding-bottom:24rpx;border-bottom:1rpx solid #e8edea}.growth-content{display:block;padding:28rpx 0;color:#26352f;font-size:27rpx;line-height:1.82;white-space:pre-wrap}.growth-actions{display:grid;grid-template-columns:1fr 1.25fr;gap:16rpx}.growth-history{margin-top:26rpx}.growth-history-row{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:12rpx;padding:20rpx 22rpx;text-align:left}.growth-history-row.active{border-color:#9bc6b5;background:#f1f8f5}.growth-history-row view{display:flex;flex-direction:column;gap:5rpx}.growth-history-row view text:first-child{font-size:25rpx;font-weight:700}.growth-history-row view text:last-child{color:#7c8882;font-size:21rpx}.growth-history-row>text{color:#6c7973;font-size:36rpx}
+
+.view-tab {
+  display: flex;
+  min-width: 0;
+  height: 72rpx;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6rpx;
+  color: #78867d;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.view-tab.active {
+  background: #e0eee7;
+  color: #245e4e;
+}
+
+.ai-empty-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92rpx;
+  height: 92rpx;
+  margin: 0 auto 24rpx;
+  border-radius: 22rpx;
+  background: #174e3e;
+  color: #dff5eb;
+  font-size: 28rpx;
+  font-weight: 750;
+}
+
+.feedback-empty {
+  padding: 56rpx 30rpx 30rpx;
+}
+
+.empty-student-mark,
+.empty-feedback-mark {
+  position: relative;
+  display: flex;
+  width: 96rpx;
+  height: 96rpx;
+  margin: 0 auto 24rpx;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24rpx;
+  background: #e1f1ea;
+  color: #174e3e;
+}
+
+.empty-next-action {
+  display: grid;
+  width: 100%;
+  min-height: 94rpx;
+  margin-top: 30rpx;
+  padding: 0 20rpx;
+  grid-template-columns: 56rpx minmax(0, 1fr) 56rpx;
+  align-items: center;
+  border-radius: 14rpx;
+  background: #174e3e;
+  color: #ffffff;
+}
+
+.empty-next-action > text {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty-action-side {
+  display: flex;
+  width: 56rpx;
+  height: 56rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.history-back {
+  margin-bottom: 18rpx;
+  color: #316655;
+  font-size: 25rpx;
+}
+
+.thinking-card {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 18rpx;
+  padding: 22rpx 24rpx;
+  border-color: #b9d7ca;
+  background: #eef8f3;
+}
+
+.thinking-mark {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 70rpx;
+  height: 70rpx;
+  gap: 7rpx;
+  border-radius: 18rpx;
+  background: #174e3e;
+}
+
+.thinking-mark text {
+  width: 7rpx;
+  height: 18rpx;
+  margin-bottom: 20rpx;
+  border-radius: 999rpx;
+  background: #dff5eb;
+  animation: thinking 900ms ease-in-out infinite alternate;
+}
+
+.thinking-mark text:nth-child(2) {
+  height: 28rpx;
+  animation-delay: 120ms;
+}
+
+.thinking-mark text:nth-child(3) {
+  height: 22rpx;
+  animation-delay: 240ms;
+}
+
+.thinking-title,
+.thinking-copy {
+  display: block;
+}
+
+.thinking-title {
+  font-size: 27rpx;
+  font-weight: 650;
+}
+
+.thinking-copy {
+  margin-top: 5rpx;
+  color: #62736b;
+  font-size: 23rpx;
+}
+
+.feedback-card {
+  width: 100%;
+  padding: 30rpx;
+}
+
+.content-enter {
+  animation: content-enter 200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+/* 使用第二个动画名触发同一节点的再次入场，避免切换学生时页面像静态替换。 */
+.content-enter-alt {
+  animation: content-enter-alt 200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+.feedback-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18rpx;
+  padding-bottom: 24rpx;
+  border-bottom: 1rpx solid #e8edea;
+}
+
+.ai-label {
+  display: flex;
+  align-items: center;
+  color: #33745f;
+  font-size: 22rpx;
+  font-weight: 650;
+}
+
+/* 反馈页沿用录音页的星芒轮廓，避免用字体字符绘制 AI 图标导致设备差异。 */
+
+.feedback-course,
+.feedback-date {
+  display: block;
+}
+
+.feedback-course {
+  margin-top: 12rpx;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.feedback-date {
+  margin-top: 7rpx;
+  color: #7d8782;
+  font-size: 23rpx;
+}
+
+.feedback-content {
+  display: block;
+  padding: 28rpx 0;
+  color: #26352f;
+  font-size: 28rpx;
+  line-height: 1.82;
+  white-space: pre-wrap;
+}
+
+.feedback-editor {
+  width: 100%;
+  min-height: 430rpx;
+  margin: 24rpx 0;
+  padding: 22rpx;
+  border: 1rpx solid #afc9be;
+  border-radius: 12rpx;
+  background: #f8faf9;
+  color: #26352f;
+  font-size: 28rpx;
+  line-height: 1.75;
+}
+
+.edit-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 16rpx;
+}
+
+.confirmation-panel {
+  display: flex;
+  gap: 18rpx;
+  margin-bottom: 18rpx;
+  padding: 22rpx;
+  flex-direction: column;
+  border-radius: 12rpx;
+  background: #fff3d8;
+}
+
+.confirmation-heading {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.confirmation-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.review-icon {
+  position: relative;
+  display: flex;
+  width: 52rpx;
+  height: 52rpx;
+  flex: 0 0 52rpx;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx solid #d8b675;
+  border-radius: 50%;
+  color: #77531b;
+}
+
+.confirmation-title,
+.confirmation-copy {
+  display: block;
+}
+
+.confirmation-title {
+  color: #77531b;
+  font-size: 25rpx;
+  font-weight: 650;
+}
+
+.confirmation-copy {
+  margin-top: 5rpx;
+  color: #8d6d39;
+  font-size: 22rpx;
+  line-height: 1.45;
+}
+
+.confirm-button {
+  display: flex;
+  width: 100%;
+  min-height: 84rpx;
+  gap: 13rpx;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11rpx;
+  background: #174e3e;
+  color: #ffffff;
+  font-size: 27rpx;
+  font-weight: 700;
+}
+
+.copy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 94rpx;
+  border-radius: 14rpx;
+  background: #174e3e;
+  color: #ffffff;
+  font-size: 29rpx;
+  font-weight: 700;
+}
+
+.copy-icon {
+  margin-right: 12rpx;
+  font-size: 25rpx;
+}
+
+.feedback-tools {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 18rpx;
+  border-top: 1rpx solid #e9eeeb;
+}
+
+.tool-button {
+  display: flex;
+  min-height: 76rpx;
+  align-items: center;
+  justify-content: center;
+  color: #456158;
+  font-size: 24rpx;
+}
+
+.tool-button.danger {
+  color: #b64035;
+}
+
+.history-list {
+  display: flex;
+  width: 100%;
+  gap: 16rpx;
+  flex-direction: column;
+}
+
+.history-card {
+  display: flex;
+  width: 100%;
+  min-height: 190rpx;
+  padding: 26rpx 28rpx;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.history-heading,
+.history-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18rpx;
+}
+
+.history-course {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  font-size: 29rpx;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-preview {
+  display: -webkit-box;
+  margin-top: 16rpx;
+  overflow: hidden;
+  color: #52615a;
+  font-size: 25rpx;
+  line-height: 1.6;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.history-meta {
+  margin-top: 18rpx;
+  color: #87908c;
+  font-size: 22rpx;
+}
+
+.history-arrow {
+  color: #5f6f68;
+  font-size: 38rpx;
+}
+
+@keyframes content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes content-enter-alt {
+  from {
+    opacity: 0;
+    transform: translateY(10rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes thinking {
+  from {
+    transform: scaleY(0.65);
+    opacity: 0.55;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content-enter,
+  .content-enter-alt,
+  .thinking-mark text {
+    animation: none;
+  }
+}
+
+/* 历史入口统一使用线性箭头，避免不同设备上的字符字形偏移。 */
+
+.history-back {
+  display: inline-flex;
+  min-height: 64rpx;
+  gap: 10rpx;
+  align-items: center;
+}
+
+.back-chevron {
+  transform: rotate(-135deg);
+}
+
+.history-arrow {
+  flex: 0 0 auto;
+  margin-right: 8rpx;
+}
+
+/* 原生小程序按钮使用明确的 flex 约束，避免标签和操作按钮被拉伸。 */
+/* 学生和视图 Tab 的选中反馈短而明确，切换时能感知位置变化但不会拖慢操作。 */
+.feedback-student,
+.view-tab {
+  transition: transform 180ms cubic-bezier(.23,1,.32,1), background-color 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out, box-shadow 180ms ease-out;
+}
+
+.feedback-student.active {
+  transform: translateY(-2rpx);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feedback-student,
+  .view-tab {
+    transition: none;
+  }
+}
+
+.feedback-student-list{display:inline-flex;width:auto}.feedback-student{width:108rpx;min-width:108rpx;max-width:108rpx;flex:0 0 108rpx}.view-tabs{display:flex;width:100%}.view-tab{width:auto;min-width:0;flex:1}.feedback-card{width:100%}.copy-button{display:flex;width:100%;min-width:0}.feedback-tools{display:flex}.tool-button{width:auto;min-width:0;flex:1}.history-card,.growth-history-row{width:100%}.growth-actions,.edit-actions{display:flex}.growth-actions button,.edit-actions button{width:auto;min-width:0;flex:1}

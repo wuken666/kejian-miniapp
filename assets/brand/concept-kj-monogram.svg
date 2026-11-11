@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="课见 KJ 字母标概念">
+  <rect width="256" height="256" rx="54" fill="#F7F6F2"/>
+  <g fill="none" stroke="#173D34" stroke-width="22" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M70 66v124M78 130l48-56M78 130l50 58"/>
+    <path d="M142 74h44v80c0 22-12 34-34 34h-12"/>
+  </g>
+</svg>

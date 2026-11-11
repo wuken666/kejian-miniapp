@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="课见课程框概念">
+  <rect width="256" height="256" rx="54" fill="#F7F6F2"/>
+  <path d="M56 62h144v28H84v76h88v-42h28v70H56z" fill="#173D34"/>
+  <rect x="103" y="105" width="42" height="18" rx="9" fill="#7FC5A8"/>
+</svg>

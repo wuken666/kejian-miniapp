@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 600" role="img" aria-label="课见课程内容卡图标预览">
+  <rect width="1100" height="600" fill="#ECEEEA"/>
+  <g font-family="Microsoft YaHei UI, Microsoft YaHei, PingFang SC, sans-serif">
+    <g transform="translate(64 64)">
+      <rect width="420" height="472" rx="28" fill="#FFFFFF"/>
+      <image href="icon-course-frame-v2.svg" x="50" y="34" width="320" height="320"/>
+      <text x="210" y="400" fill="#17201C" font-size="30" font-weight="700" text-anchor="middle">课见</text>
+      <text x="210" y="436" fill="#747D78" font-size="16" text-anchor="middle">教师 AI 助手</text>
+    </g>
+
+    <g transform="translate(552 86)">
+      <text x="0" y="28" fill="#17201C" font-size="25" font-weight="700">最终方向 · 课程内容卡</text>
+      <text x="0" y="64" fill="#747D78" font-size="16">轻微圆角降低锐利感，仍保留清晰的几何骨架</text>
+
+      <g transform="translate(0 114)">
+        <rect width="436" height="74" rx="16" fill="#FFFFFF"/>
+        <rect x="20" y="18" width="38" height="38" rx="10" fill="#173D34"/>
+        <text x="80" y="31" fill="#17201C" font-size="16" font-weight="700">课程外框</text>
+        <text x="80" y="54" fill="#747D78" font-size="14">代表一节课和课堂内容</text>
+      </g>
+
+      <g transform="translate(0 204)">
+        <rect width="436" height="74" rx="16" fill="#FFFFFF"/>
+        <rect x="20" y="26" width="54" height="14" rx="7" fill="#173D34"/>
+        <text x="96" y="31" fill="#17201C" font-size="16" font-weight="700">知识点记录</text>
+        <text x="96" y="54" fill="#747D78" font-size="14">两条信息线表示课堂学习内容</text>
+      </g>
+
+      <g transform="translate(0 294)">
+        <rect width="436" height="74" rx="16" fill="#FFFFFF"/>
+        <rect x="20" y="26" width="54" height="14" rx="7" fill="#7FC5A8"/>
+        <text x="96" y="31" fill="#17201C" font-size="16" font-weight="700">AI 提炼重点</text>
+        <text x="96" y="54" fill="#747D78" font-size="14">薄荷色只承担一个品牌记忆点</text>
+      </g>
+
+      <g transform="translate(0 414)">
+        <image href="icon-course-frame-v2.svg" x="0" y="0" width="72" height="72"/>
+        <image href="icon-course-frame-v2.svg" x="104" y="16" width="56" height="56"/>
+        <image href="icon-course-frame-v2.svg" x="192" y="24" width="48" height="48"/>
+        <text x="276" y="42" fill="#747D78" font-size="14">小尺寸仍保留课程轮廓</text>
+      </g>
+    </g>
+  </g>
+</svg>

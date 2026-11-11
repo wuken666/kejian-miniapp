@@ -1,0 +1,12 @@
+{
+  "name": "keban-wechat-miniapp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test:workspace": "node tests/recording-workspace.test.js",
+    "test": "node tests/recording-state.test.js && node tests/service-config.test.js && node tests/auth.test.js && node tests/api-access.test.js && node tests/lesson-recorder.test.js && node tests/record-page-interaction.test.js && node tests/record-page-save.test.js && node tests/home-interaction.test.js && node tests/tab-bar-interaction.test.js && node tests/page-race.test.js && node tests/profile-interaction.test.js && node tests/students-interaction.test.js && node tests/schedule-interaction.test.js && node tests/teaching-stats.test.js && node tests/icons.test.js && node tests/ui-parity.test.js && node tests/release-check.test.js",
+    "test:icons": "node tests/icons.test.js && node tests/ui-parity.test.js",
+    "release-check": "node scripts/release-check.js"
+  }
+}

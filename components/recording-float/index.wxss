@@ -1,0 +1,4 @@
+.recording-float { position: fixed; right: 20rpx; top: 48%; z-index: 900; width: 104rpx; height: 104rpx; border-radius: 50%; background: #174e3e; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 6rpx 22rpx #0003; border: 2rpx solid #fff; }
+.float-icon { width: 38rpx; height: 38rpx; }
+.float-label { font-size: 19rpx; line-height: 28rpx; }
+.recording-float.active { border-color: #edb598; }

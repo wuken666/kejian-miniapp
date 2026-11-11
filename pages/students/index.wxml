@@ -1,0 +1,82 @@
+<view class="page-shell students-page">
+
+  <view wx:if="{{loading}}" class="loading-state">正在加载学生档案…</view>
+  <view wx:elif="{{loadError}}" class="empty-state"><text>暂时无法加载学生名单</text><button class="secondary-button" bindtap="loadStudents">重试</button></view>
+  <view wx:elif="{{!students.length}}" class="empty-state surface">
+    <view class="empty-avatar">学</view><text class="empty-title">先添加第一位学生</text>
+    <text class="empty-copy">之后的课堂录音、反馈和成长记录都会自动归档。</text>
+    <view class="empty-primary-action pressable" hover-class="pressable-active" role="button" bindtap="openCreateEditor">
+      <view class="empty-action-side"><view class="plus-icon"><image class="glyph-image" src="/assets/icons/plus-white.png" mode="aspectFit" aria-hidden="true" /></view></view>
+      <text>添加学生</text>
+      <view class="empty-action-side"><view class="chevron-icon"><image class="glyph-image" src="/assets/icons/right-white.png" mode="aspectFit" aria-hidden="true" /></view></view>
+    </view>
+  </view>
+
+  <block wx:else>
+    <block wx:if="{{!showDetail}}">
+      <input class="student-search" value="{{searchText}}" bindinput="searchStudents" placeholder="搜索姓名、年级或科目" />
+      <view class="student-status-tabs" role="tablist">
+        <view class="student-status-tab pressable {{studentTab === 'active' ? 'selected' : ''}}" role="tab" aria-selected="{{studentTab === 'active'}}" data-tab="active" bindtap="changeStudentTab"><text>在读</text><text>{{activeCount}}</text></view>
+        <view class="student-status-tab pressable {{studentTab === 'graduated' ? 'selected' : ''}}" role="tab" aria-selected="{{studentTab === 'graduated'}}" data-tab="graduated" bindtap="changeStudentTab"><text>结业</text><text>{{graduatedCount}}</text></view>
+      </view>
+      <text class="student-list-count">{{studentTab === 'graduated' ? '结业学生' : '在读学生'}} · {{filteredStudents.length}} 位</text>
+      <view wx:for="{{filteredStudents}}" wx:key="id" class="student-directory-row pressable" role="button" data-id="{{item.id}}" bindtap="selectStudent"><view class="directory-avatar">{{item.shortName}}</view><view class="directory-copy"><text>{{item.name}}</text><text class="directory-meta">{{item.grade}} · {{item.subject}}</text><text wx:if="{{item.address}}" class="directory-address">{{item.address}}</text></view><view class="directory-lessons"><text>{{item.lessonCount}}</text><text>份记录</text></view><image src="/assets/icons/right-muted.png" mode="aspectFit" /></view>
+      <text wx:if="{{!filteredStudents.length}}" class="student-search-empty">{{searchText ? '没有匹配的学生' : studentTab === 'graduated' ? '暂无结业学生' : '暂无在读学生'}}</text>
+    </block>
+    <view wx:else class="directory-back pressable" role="button" bindtap="backToList"><image src="/assets/icons/right-muted.png" /><text>{{studentTab === 'graduated' ? '结业学生' : '在读学生'}}</text></view>
+
+    <block wx:if="{{showDetail}}">
+    <view wx:if="{{selectedStudent}}" class="student-detail surface detail-enter {{detailTransition ? 'detail-swap' : ''}}">
+      <view class="student-detail-header">
+        <view class="detail-avatar">{{selectedStudent.shortName}}</view>
+        <view class="detail-identity"><text class="detail-name">{{selectedStudent.name}}</text><text class="detail-meta">{{selectedStudent.grade}} · {{selectedStudent.subject}}</text><text wx:if="{{selectedStudent.graduated}}" class="student-graduated-label">已结业</text></view>
+        <view class="edit-button pressable" hover-class="pressable-active" role="button" aria-label="编辑学生" bindtap="openEditEditor"><view class="pencil-icon"><image class="glyph-image" src="/assets/icons/edit-green.png" mode="aspectFit" aria-hidden="true" /></view></view>
+      </view>
+      <view class="detail-divider"></view>
+      <view class="detail-address"><text class="detail-label">课时费用</text><text class="detail-value">{{selectedStudent.lessonFeeLabel}}</text></view>
+      <view wx:if="{{selectedStudent.address}}" class="detail-address"><text class="detail-label">学生地址</text><text class="detail-value">{{selectedStudent.address}}</text></view>
+      <view class="detail-grid">
+        <view class="detail-field"><text class="detail-label">学习目标</text><text class="detail-value {{selectedStudent.learningGoal ? '' : 'muted'}}">{{selectedStudent.learningGoal || '暂未填写，可稍后补充'}}</text></view>
+        <view class="detail-field count-field"><text class="detail-label">课堂记录</text><text class="detail-value count">{{selectedStudent.lessonCount}} 次</text></view>
+      </view>
+    </view>
+
+    <view class="section-heading"><view><text class="section-title">过往课程</text></view></view>
+    <view wx:if="{{lessonLoading}}" class="loading-state compact">正在加载课堂记录…</view>
+    <view wx:elif="{{!lessons.length}}" class="empty-state compact surface"><text class="empty-title">还没有课堂记录</text><text class="empty-copy">第一次录课后，课堂摘要会显示在这里。</text></view>
+    <view wx:else class="lesson-list surface">
+      <view wx:for="{{lessons}}" wx:key="id" class="lesson-row pressable" hover-class="pressable-active" role="button" data-id="{{item.id}}" bindtap="openLessonRecord">
+        <view class="lesson-datetime"><text wx:if="{{item.lessonYear}}" class="lesson-year">{{item.lessonYear}}</text><text class="lesson-day">{{item.lessonDay}}</text><text class="lesson-start-time {{item.lessonTime === '时间未记录' ? 'time-unknown' : ''}}">{{item.lessonTime}}</text></view>
+        <view class="lesson-copy">
+          <view class="lesson-heading"><text class="lesson-title">{{item.title}}</text><text class="status-pill {{item.statusText === '待确认' ? 'warning' : item.statusText === '已确认' ? 'success' : ''}}">{{item.statusText}}</text></view>
+          <text class="lesson-summary">{{item.summary}}</text>
+        </view><view class="lesson-arrow chevron-icon"><image class="glyph-image" src="/assets/icons/right-muted.png" mode="aspectFit" aria-hidden="true" /></view>
+      </view>
+    </view>
+    <view wx:if="{{selectedStudent}}" class="student-graduation-button pressable {{selectedStudent.graduated ? '' : 'graduation-red'}}" role="button" aria-disabled="{{saving}}" bindtap="changeGraduation"><image wx:if="{{selectedStudent.graduated}}" src="/assets/icons/refresh-green.png" mode="aspectFit" /><text>{{selectedStudent.graduated ? '恢复在读' : '结业'}}</text></view>
+    </block>
+  </block>
+
+  <view wx:if="{{showEditor}}" class="sheet-mask" bindtap="closeEditor"><view class="bottom-sheet" catchtap="stopPropagation">
+    <view class="sheet-handle"></view><text class="sheet-title">{{editorMode === 'create' ? '添加学生' : '编辑学生档案'}}</text><text class="sheet-copy">只填写上课真正需要的信息，之后都可以修改。</text>
+    <view class="field"><text class="field-label">学生姓名</text><input class="field-input" maxlength="20" placeholder="请输入姓名" value="{{form.name}}" data-field="name" bindinput="updateFormField" /></view>
+    <view class="field-row"><view class="field"><text class="field-label">年级</text><input class="field-input" maxlength="20" placeholder="如：初二" value="{{form.grade}}" data-field="grade" bindinput="updateFormField" /></view><view class="field"><text class="field-label">科目</text><input class="field-input" maxlength="20" placeholder="如：英语" value="{{form.subject}}" data-field="subject" bindinput="updateFormField" /></view></view>
+    <view class="field"><text class="field-label">课时费用（元/节，选填）</text><input class="field-input" type="digit" maxlength="9" placeholder="留空表示未设置，0 表示免费" value="{{form.lessonFee}}" data-field="lessonFee" bindinput="updateFormField" /></view>
+    <view class="field"><text class="field-label">学习目标</text><textarea class="field-textarea" maxlength="300" placeholder="如：本学期夯实语法基础，提升阅读正确率" value="{{form.learningGoal}}" data-field="learningGoal" bindinput="updateFormField"></textarea></view>
+    <view class="field"><text class="field-label">学生地址（选填）</text><textarea class="field-textarea address-input" maxlength="255" placeholder="如：所在小区、街道或详细地址" value="{{form.address}}" data-field="address" bindinput="updateFormField"></textarea></view>
+    <view class="sheet-actions"><button class="secondary-button pressable" bindtap="closeEditor">取消</button><button class="primary-button pressable" loading="{{saving}}" bindtap="saveStudent">{{saving ? '保存中' : '保存档案'}}</button></view>
+    <button wx:if="{{editorMode === 'edit'}}" class="danger-button delete-student pressable" bindtap="deleteStudent">删除这位学生</button>
+  </view></view>
+
+  <view wx:if="{{showLessonEditor}}" class="sheet-mask" bindtap="closeLessonEditor"><view class="bottom-sheet lesson-sheet" catchtap="stopPropagation">
+    <view class="sheet-handle"></view><text class="sheet-title">课堂记录</text><text class="sheet-copy">查看 AI 整理结果，需要时直接修正。</text>
+    <view class="field"><text class="field-label">课程主题</text><input class="field-input" value="{{lessonForm.courseTitle}}" data-field="courseTitle" bindinput="updateLessonField" /></view>
+    <view class="field-row"><view class="field"><text class="field-label">上课日期</text><picker mode="date" value="{{lessonForm.lessonDate}}" bindchange="updateLessonDate"><view class="field-input picker-value">{{lessonForm.lessonDate}}</view></picker></view><view class="field"><text class="field-label">课时（分钟）</text><input class="field-input" type="number" value="{{lessonForm.durationMinutes}}" data-field="durationMinutes" bindinput="updateLessonField" /></view></view>
+    <view class="field"><text class="field-label">课堂内容与知识点</text><textarea class="field-textarea" auto-height value="{{lessonForm.content}}" data-field="content" bindinput="updateLessonField"></textarea></view>
+    <view class="field"><text class="field-label">学生表现</text><textarea class="field-textarea" auto-height value="{{lessonForm.performance}}" data-field="performance" bindinput="updateLessonField" placeholder="没有明确表现可留空"></textarea></view>
+    <view class="field"><text class="field-label">课后练习</text><textarea class="field-textarea" auto-height value="{{lessonForm.homework}}" data-field="homework" bindinput="updateLessonField" placeholder="本节未布置可留空"></textarea></view>
+    <view class="sheet-actions"><button class="secondary-button pressable" bindtap="closeLessonEditor">取消</button><button class="primary-button pressable" loading="{{saving}}" bindtap="saveLesson">保存课堂记录</button></view>
+  </view></view>
+</view>
+<view wx:if="{{!showDetail && !showEditor && !showLessonEditor}}" class="student-add-float pressable" hover-class="pressable-active" role="button" aria-label="添加学生" bindtap="openCreateEditor"><view class="plus-icon"><image class="glyph-image" src="/assets/icons/plus-white.png" mode="aspectFit" aria-hidden="true" /></view></view>
+<recording-float />

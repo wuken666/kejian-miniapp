@@ -1,0 +1,31 @@
+/* Lucide: one 24px grid, 2px stroke, round caps. PNGs share SVG sources. */
+.glyph-image { display: block; width: 100%; height: 100%; flex-shrink: 0; }
+.icon-mic, .mini-mic, .chevron-icon, .plus-icon, .auth-lock,
+.refresh-icon, .warning-icon, .view-icon, .empty-calendar-icon,
+.close-icon, .check-icon, .pencil-icon, .back-icon, .pause-icon,
+.trash-icon, .record-mic-icon, .ai-spark, .clipboard-icon {
+  display: flex;
+  width: 36rpx;
+  height: 36rpx;
+  flex: 0 0 36rpx;
+  align-items: center;
+  justify-content: center;
+}
+.chevron-icon { width: 28rpx; height: 28rpx; flex-basis: 28rpx; }
+.chevron-icon.previous, .back-chevron, .back-icon { transform: rotate(180deg); }
+.editor-control .chevron-icon { transform: rotate(90deg); }
+.mini-mic, .icon-mic { width: 40rpx; height: 40rpx; flex-basis: 40rpx; }
+.stage-mic { width: 68rpx; height: 68rpx; flex-basis: 68rpx; }
+.auth-lock, .warning-icon { width: 44rpx; height: 44rpx; flex-basis: 44rpx; }
+.refresh-icon { width: 28rpx; height: 28rpx; flex-basis: 28rpx; }
+.record-mic-icon, .empty-calendar-icon { width: 64rpx; height: 64rpx; flex-basis: 64rpx; }
+.record-mic-icon.small { width: 36rpx; height: 36rpx; flex-basis: 36rpx; }
+.clipboard-icon { margin-right: 12rpx; }
+.ai-spark { width: 42rpx; height: 42rpx; flex-basis: 42rpx; padding: 6rpx; margin-right: 9rpx; border-radius: 8rpx; background: #dff1e9; }
+.generate-button .ai-spark { background: rgba(143,240,207,.14); }
+.assist-symbol, .assist-icon { display: flex; align-items: center; justify-content: center; width: 54rpx; height: 54rpx; flex: 0 0 54rpx; padding: 9rpx; border-radius: 8rpx; background: #e4f1ed; }
+.assist-symbol.text, .assist-icon.text { background: #f6ecd6; }
+.assist-symbol.manual, .assist-icon.manual { background: #e9efec; }
+.profile-row-icon { padding: 10rpx; }
+.empty-users-image { display: block; width: 60rpx; height: 60rpx; }
+.student-mark-plus { position: absolute; right: 7rpx; bottom: 8rpx; width: 32rpx; height: 32rpx; padding: 3rpx; border: 3rpx solid #e1f1ea; border-radius: 50%; background: #174e3e; }

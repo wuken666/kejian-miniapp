@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-label="课见 B2 图标优化方案">
+  <rect width="1200" height="600" fill="#ECEDE9"/>
+
+  <g font-family="Microsoft YaHei UI, Microsoft YaHei, PingFang SC, sans-serif" fill="#17201C">
+    <text x="64" y="66" font-size="28" font-weight="700">课见 · B2</text>
+    <text x="64" y="100" font-size="16" fill="#68716C">几何见字 + AI 处理轨道</text>
+  </g>
+
+  <g transform="translate(64 140)">
+    <rect width="320" height="320" rx="70" fill="#103B32"/>
+    <g transform="translate(32 32)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+      <path d="M76 68h104v78H76z"/>
+      <path d="M116 146v18c0 20-14 30-36 30"/>
+      <path d="M142 146v24c0 16 12 24 34 24"/>
+    </g>
+    <path d="M128 138h64" fill="none" stroke="#7BC3A5" stroke-linecap="round" stroke-width="16"/>
+  </g>
+
+  <g transform="translate(440 140)" font-family="Microsoft YaHei UI, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="0" y="28" font-size="23" font-weight="700" fill="#17201C">一个强调色，一种动作</text>
+    <text x="0" y="62" font-size="15" fill="#68716C">静态时是识别笔画，工作时是处理轨道。</text>
+
+    <g transform="translate(0 100)">
+      <rect width="136" height="136" rx="30" fill="#103B32"/>
+      <g transform="scale(.53125)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+        <path d="M76 68h104v78H76z"/>
+        <path d="M116 146v18c0 20-14 30-36 30"/>
+        <path d="M142 146v24c0 16 12 24 34 24"/>
+        <path d="M96 106h64" stroke="#547B6C" stroke-width="16"/>
+        <path d="M112 106h24" stroke="#C9F2E0" stroke-width="16"/>
+      </g>
+      <text x="0" y="166" font-size="15" font-weight="700" fill="#17201C">AI 整理中</text>
+      <text x="0" y="190" font-size="13" fill="#68716C">亮段沿轨道匀速通过</text>
+    </g>
+
+    <g transform="translate(176 100)">
+      <rect width="136" height="136" rx="30" fill="#103B32"/>
+      <g transform="scale(.53125)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+        <path d="M76 68h104v78H76z"/>
+        <path d="M116 146v18c0 20-14 30-36 30"/>
+        <path d="M142 146v24c0 16 12 24 34 24"/>
+        <path d="M96 106h64" stroke="#7BC3A5" stroke-width="16"/>
+      </g>
+      <text x="0" y="166" font-size="15" font-weight="700" fill="#17201C">整理完成</text>
+      <text x="0" y="190" font-size="13" fill="#68716C">轨道稳定为品牌强调色</text>
+    </g>
+
+    <g transform="translate(352 100)">
+      <rect width="136" height="136" rx="30" fill="#171A18"/>
+      <g transform="scale(.53125)" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+        <path d="M76 68h104v78H76z"/>
+        <path d="M116 146v18c0 20-14 30-36 30"/>
+        <path d="M142 146v24c0 16 12 24 34 24"/>
+        <path d="M96 106h64" stroke-width="16"/>
+      </g>
+      <text x="0" y="166" font-size="15" font-weight="700" fill="#17201C">黑白校验</text>
+      <text x="0" y="190" font-size="13" fill="#68716C">无颜色时结构仍然成立</text>
+    </g>
+
+    <g transform="translate(0 350)" fill="#17201C">
+      <text x="0" y="20" font-size="14" fill="#68716C">小尺寸</text>
+      <g transform="translate(74 0)">
+        <rect width="32" height="32" rx="7" fill="#103B32"/>
+        <g transform="scale(.125)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+          <path d="M76 68h104v78H76z"/>
+          <path d="M116 146v18c0 20-14 30-36 30"/>
+          <path d="M142 146v24c0 16 12 24 34 24"/>
+          <path d="M96 106h64" stroke="#7BC3A5" stroke-width="16"/>
+        </g>
+        <text x="16" y="52" text-anchor="middle" font-size="12" fill="#68716C">32</text>
+      </g>
+      <g transform="translate(130 -8)">
+        <rect width="48" height="48" rx="11" fill="#103B32"/>
+        <g transform="scale(.1875)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+          <path d="M76 68h104v78H76z"/>
+          <path d="M116 146v18c0 20-14 30-36 30"/>
+          <path d="M142 146v24c0 16 12 24 34 24"/>
+          <path d="M96 106h64" stroke="#7BC3A5" stroke-width="16"/>
+        </g>
+        <text x="24" y="68" text-anchor="middle" font-size="12" fill="#68716C">48</text>
+      </g>
+      <g transform="translate(206 -16)">
+        <rect width="64" height="64" rx="14" fill="#103B32"/>
+        <g transform="scale(.25)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+          <path d="M76 68h104v78H76z"/>
+          <path d="M116 146v18c0 20-14 30-36 30"/>
+          <path d="M142 146v24c0 16 12 24 34 24"/>
+          <path d="M96 106h64" stroke="#7BC3A5" stroke-width="16"/>
+        </g>
+        <text x="32" y="84" text-anchor="middle" font-size="12" fill="#68716C">64</text>
+      </g>
+      <text x="300" y="20" font-size="14" fill="#68716C">图形安全区 22% · 圆角 22%</text>
+    </g>
+  </g>
+</svg>

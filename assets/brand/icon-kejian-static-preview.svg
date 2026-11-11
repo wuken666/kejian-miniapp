@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-label="课见静态图标预览">
+  <rect width="1200" height="600" fill="#ECEEEA"/>
+
+  <g transform="translate(64 64)">
+    <rect width="420" height="472" rx="28" fill="#FFFFFF"/>
+    <image href="icon-kejian-static.svg" x="50" y="42" width="320" height="320"/>
+    <text x="210" y="408" fill="#17201C" font-family="Microsoft YaHei UI, Microsoft YaHei, PingFang SC, sans-serif" font-size="30" font-weight="700" text-anchor="middle">课见</text>
+    <text x="210" y="442" fill="#747D78" font-family="Microsoft YaHei UI, Microsoft YaHei, PingFang SC, sans-serif" font-size="16" text-anchor="middle">教师 AI 助手</text>
+  </g>
+
+  <g transform="translate(552 86)" font-family="Microsoft YaHei UI, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="0" y="28" fill="#17201C" font-size="24" font-weight="700">静态品牌图标</text>
+    <text x="0" y="62" fill="#747D78" font-size="16">保留“见”的字形识别，薄荷色内横表示洞察结果。</text>
+
+    <g transform="translate(0 112)">
+      <image href="icon-kejian-static.svg" x="0" y="0" width="128" height="128"/>
+      <image href="icon-kejian-static.svg" x="176" y="32" width="96" height="96"/>
+      <image href="icon-kejian-static.svg" x="320" y="64" width="64" height="64"/>
+      <image href="icon-kejian-static.svg" x="432" y="80" width="48" height="48"/>
+      <text x="64" y="158" fill="#747D78" font-size="13" text-anchor="middle">128 px</text>
+      <text x="224" y="158" fill="#747D78" font-size="13" text-anchor="middle">96 px</text>
+      <text x="352" y="158" fill="#747D78" font-size="13" text-anchor="middle">64 px</text>
+      <text x="456" y="158" fill="#747D78" font-size="13" text-anchor="middle">48 px</text>
+    </g>
+
+    <g transform="translate(0 346)">
+      <rect width="540" height="112" rx="18" fill="#FFFFFF"/>
+      <image href="icon-kejian-static.svg" x="24" y="24" width="64" height="64"/>
+      <text x="112" y="52" fill="#17201C" font-size="20" font-weight="700">课见</text>
+      <text x="112" y="80" fill="#747D78" font-size="15">教师 AI 助手</text>
+      <rect x="430" y="36" width="78" height="40" rx="20" fill="#E3F2EB"/>
+      <text x="469" y="62" fill="#235C4C" font-size="14" font-weight="700" text-anchor="middle">打开</text>
+    </g>
+  </g>
+</svg>

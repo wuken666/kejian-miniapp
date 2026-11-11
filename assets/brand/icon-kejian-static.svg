@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="课见微信小程序图标">
+  <rect width="256" height="256" rx="54" fill="#123E34"/>
+  <text
+    x="128"
+    y="184"
+    fill="#F7F5EF"
+    font-family="Microsoft YaHei UI, Microsoft YaHei, PingFang SC, sans-serif"
+    font-size="150"
+    font-weight="700"
+    text-anchor="middle"
+  >见</text>
+  <rect x="105" y="104" width="46" height="13" rx="6.5" fill="#86C9AD"/>
+</svg>

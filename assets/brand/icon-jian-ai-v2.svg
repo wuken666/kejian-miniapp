@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="课见 AI 几何见字图标">
+  <rect width="256" height="256" rx="56" fill="#103B32"/>
+  <g fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+    <path d="M76 68h104v78H76z"/>
+    <path d="M116 146v18c0 20-14 30-36 30"/>
+    <path d="M142 146v24c0 16 12 24 34 24"/>
+  </g>
+  <path d="M96 106h64" fill="none" stroke="#7BC3A5" stroke-linecap="round" stroke-width="16"/>
+</svg>

@@ -1,0 +1,148 @@
+<view class="page-shell feedback-page">
+  <view wx:if="{{students.length}}" class="student-switcher">
+    <scroll-view class="feedback-student-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
+      <view class="feedback-student-list">
+        <view
+          wx:for="{{students}}"
+          wx:key="id"
+          class="feedback-student pressable {{selectedStudentId === item.id ? 'active' : ''}}"
+          hover-class="pressable-active"
+          role="button"
+          data-id="{{item.id}}"
+          bindtap="selectStudent"
+        >
+          <text>{{item.shortName}}</text>
+          <text class="feedback-student-name">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view wx:if="{{students.length}}" class="view-tabs">
+    <view class="view-tab pressable {{viewMode === 'latest' ? 'active' : ''}}" hover-class="pressable-active" role="button" data-view="latest" bindtap="switchView">最新反馈</view>
+    <view class="view-tab pressable {{viewMode === 'history' ? 'active' : ''}}" hover-class="pressable-active" role="button" data-view="history" bindtap="switchView">历史记录</view>
+    <view class="view-tab pressable {{viewMode === 'growth' ? 'active' : ''}}" hover-class="pressable-active" role="button" data-view="growth" bindtap="switchView">成长总结</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-state">正在加载课堂反馈…</view>
+
+  <view wx:elif="{{!students.length}}" class="empty-state surface feedback-empty">
+    <view class="empty-student-mark">
+      <image class="empty-users-image" src="/assets/icons/students-green.png" mode="aspectFit" aria-hidden="true" />
+      <view class="student-mark-plus plus-icon"><image class="glyph-image" src="/assets/icons/plus-white.png" mode="aspectFit" aria-hidden="true" /></view>
+    </view>
+    <text class="empty-title">先添加第一位学生</text>
+    <text class="empty-copy">学生档案会关联课堂记录、AI 反馈和成长总结。</text>
+    <view class="empty-next-action pressable" hover-class="pressable-active" role="button" bindtap="goToStudents">
+      <view class="empty-action-side"><view class="plus-icon"><image class="glyph-image" src="/assets/icons/plus-white.png" mode="aspectFit" aria-hidden="true" /></view></view>
+      <text>添加学生</text>
+      <view class="empty-action-side"><view class="chevron-icon"><image class="glyph-image" src="/assets/icons/right-white.png" mode="aspectFit" aria-hidden="true" /></view></view>
+    </view>
+  </view>
+
+  <block wx:elif="{{viewMode === 'growth'}}">
+    <view wx:if="{{generatingGrowth}}" class="thinking-card surface">
+      <view class="thinking-mark"><text></text><text></text><text></text></view>
+      <view><text class="thinking-title">AI 正在回顾学习轨迹</text><text class="thinking-copy">对比历次课堂，提炼进步与待加强方向。</text></view>
+    </view>
+      <view wx:if="{{activeGrowthReport}}" class="growth-card surface {{contentAnimationClass}}">
+      <view class="growth-header"><view><view class="ai-label"><view class="ai-spark" aria-hidden="true"><image class="glyph-image" src="/assets/icons/sparkles-green.png" mode="aspectFit" aria-hidden="true" /></view><text>AI 成长总结</text></view><text class="feedback-course">{{selectedStudent.name}}的学习阶段总结</text><text class="feedback-date">{{activeGrowthReport.periodText}} · {{activeGrowthReport.lessonCount}} 节课</text></view></view>
+      <text class="growth-content">{{activeGrowthReport.content}}</text>
+      <view class="growth-actions"><button class="secondary-button pressable" loading="{{generatingGrowth}}" bindtap="generateGrowthReport">重新生成</button><button class="primary-button pressable" bindtap="copyGrowthReport">复制总结</button></view>
+    </view>
+    <view wx:else class="empty-state surface"><view class="ai-empty-mark">AI</view><text class="empty-title">生成阶段成长总结</text><text class="empty-copy">AI 会回顾历次课堂，归纳进步、稳定掌握的知识和下一阶段重点。</text><button class="primary-button pressable" loading="{{generatingGrowth}}" bindtap="generateGrowthReport">生成成长总结</button></view>
+    <view wx:if="{{growthReports.length > 1}}" class="growth-history"><view class="section-heading"><text class="section-title">历史总结</text></view><view wx:for="{{growthReports}}" wx:key="id" class="growth-history-row surface pressable {{activeGrowthReport.id === item.id ? 'active' : ''}}" hover-class="pressable-active" role="button" data-id="{{item.id}}" bindtap="openGrowthReport"><view><text>{{item.periodText}}</text><text>{{item.lessonCount}} 节课堂</text></view><view class="chevron-icon"><image class="glyph-image" src="/assets/icons/right-muted.png" mode="aspectFit" aria-hidden="true" /></view></view></view>
+  </block>
+
+  <view wx:elif="{{!feedbacks.length}}" class="empty-state surface feedback-empty">
+    <view class="empty-feedback-mark"><view class="record-mic-icon"><image class="glyph-image" src="/assets/icons/feedback-green.png" mode="aspectFit" aria-hidden="true" /></view></view>
+    <text class="empty-title">暂无课堂反馈</text>
+    <text class="empty-copy">{{selectedStudent.name}}还没有课堂反馈。</text>
+  </view>
+
+  <block wx:elif="{{viewMode === 'latest' || historyDetail}}">
+    <view wx:if="{{historyDetail}}" class="history-back pressable" hover-class="pressable-active" role="button" bindtap="backToHistory"><view class="chevron-icon back-chevron"><image class="glyph-image" src="/assets/icons/right-muted.png" mode="aspectFit" aria-hidden="true" /></view><text>返回历史记录</text></view>
+
+    <view wx:if="{{regenerating}}" class="thinking-card surface">
+      <view class="thinking-mark"><text></text><text></text><text></text></view>
+      <view>
+        <text class="thinking-title">AI 正在重新整理</text>
+        <text class="thinking-copy">提炼知识点与学生表现，请稍候。</text>
+      </view>
+    </view>
+
+    <view wx:if="{{activeFeedback}}" class="feedback-card surface {{contentAnimationClass}}" key="{{activeFeedback.id}}">
+      <view class="feedback-card-header">
+        <view>
+          <view class="ai-label"><view class="ai-spark" aria-hidden="true"><image class="glyph-image" src="/assets/icons/sparkles-green.png" mode="aspectFit" aria-hidden="true" /></view><text>AI 生成</text></view>
+          <text class="feedback-course">{{activeFeedback.courseTitle}}</text>
+          <text class="feedback-date">{{selectedStudent.name}} · {{activeFeedback.dateText}}</text>
+        </view>
+        <text class="status-pill {{activeFeedback.confirmed ? 'success' : 'warning'}}">{{activeFeedback.confirmed ? '已确认' : '待确认'}}</text>
+      </view>
+
+      <textarea
+        wx:if="{{editing}}"
+        class="feedback-editor"
+        maxlength="10000"
+        value="{{draft}}"
+        auto-height
+        bindinput="updateDraft"
+      ></textarea>
+      <text wx:else class="feedback-content">{{activeFeedback.content}}</text>
+
+      <view wx:if="{{editing}}" class="edit-actions">
+        <button class="secondary-button pressable" bindtap="cancelEditing">取消</button>
+        <button class="primary-button pressable" loading="{{saving}}" bindtap="saveFeedback">保存修改</button>
+      </view>
+
+      <view wx:elif="{{!activeFeedback.confirmed}}" class="confirmation-panel">
+        <view class="confirmation-heading">
+          <view class="review-icon"><view class="check-icon"><image class="glyph-image" src="/assets/icons/check-green.png" mode="aspectFit" aria-hidden="true" /></view></view>
+          <view class="confirmation-text">
+          <text class="confirmation-title">发送前请老师确认</text>
+          <text class="confirmation-copy">核对知识点、学生表现和课后练习是否真实。</text>
+          </view>
+        </view>
+        <view class="confirm-button pressable" hover-class="pressable-active" role="button" bindtap="confirmFeedback">
+          <view class="check-icon"><image class="glyph-image" src="/assets/icons/check-white.png" mode="aspectFit" aria-hidden="true" /></view>
+          <text>确认内容无误</text>
+        </view>
+      </view>
+
+      <view wx:if="{{!editing && activeFeedback.confirmed}}" class="copy-button pressable" hover-class="pressable-active" role="button" bindtap="copyFeedback">
+        <view class="clipboard-icon"><image class="glyph-image" src="/assets/icons/copy-green.png" mode="aspectFit" aria-hidden="true" /></view>
+        <text>复制给家长</text>
+      </view>
+
+      <view wx:if="{{!editing}}" class="feedback-tools">
+        <view class="tool-button pressable" hover-class="pressable-active" role="button" bindtap="startEditing">编辑</view>
+        <view class="tool-button pressable {{regenerating ? 'disabled' : ''}}" hover-class="pressable-active" role="button" bindtap="regenerateFeedback">重新生成</view>
+        <view class="tool-button danger pressable" hover-class="pressable-active" role="button" bindtap="deleteFeedback">删除</view>
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="history-list">
+    <view
+      wx:for="{{feedbacks}}"
+      wx:key="id"
+      class="history-card surface pressable {{contentAnimationClass}}"
+      hover-class="pressable-active"
+      role="button"
+      data-id="{{item.id}}"
+      bindtap="openHistoryFeedback"
+    >
+      <view class="history-heading">
+        <text class="history-course">{{item.courseTitle}}</text>
+        <text class="status-pill {{item.confirmed ? 'success' : 'warning'}}">{{item.confirmed ? '已确认' : '待确认'}}</text>
+      </view>
+      <text class="history-preview">{{item.content}}</text>
+      <view class="history-meta">
+        <text>{{item.dateText}}{{item.revised ? ' · 已修订' : ''}}</text>
+        <view class="history-arrow chevron-icon"><image class="glyph-image" src="/assets/icons/right-muted.png" mode="aspectFit" aria-hidden="true" /></view>
+      </view>
+    </view>
+  </view>
+</view>
+<recording-float />

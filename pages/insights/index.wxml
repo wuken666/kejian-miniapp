@@ -1,0 +1,49 @@
+<view class="page-shell insights-page">
+  <view class="insight-view-tabs" role="tablist"><view class="{{insightView === 'teaching' ? 'active' : ''}}" role="tab" aria-selected="{{insightView === 'teaching'}}" data-view="teaching" bindtap="chooseInsightView">教学</view><view class="{{insightView === 'income' ? 'active' : ''}}" role="tab" aria-selected="{{insightView === 'income'}}" data-view="income" bindtap="chooseInsightView">收入</view></view>
+  <text wx:if="{{updatedLabel}}" class="insight-updated">数据更新 {{updatedLabel}}</text>
+  <view class="period-tabs"><view wx:for="{{periods}}" wx:key="key" class="period-tab {{period === item.key ? 'active' : ''}}" role="button" data-period="{{item.key}}" bindtap="choosePeriod">{{item.label}}</view></view>
+  <view class="period-navigation"><view role="button" aria-label="上一时段" data-offset="-1" bindtap="movePeriod"><image class="back" src="/assets/icons/right-muted.png" /></view><text>{{periodLabel}}</text><view role="button" aria-label="下一时段" data-offset="1" bindtap="movePeriod"><image src="/assets/icons/right-muted.png" /></view></view>
+  <view wx:if="{{loading && !hasReport}}" class="loading-state">正在汇总教学数据…</view>
+  <view wx:elif="{{error && !hasReport}}" class="empty-state"><text>暂时无法加载数据</text><button class="secondary-button" bindtap="loadReport">重试</button></view>
+  <block wx:else>
+    <block wx:if="{{insightView === 'income'}}">
+      <view wx:if="{{!incomeAvailable}}" class="empty-state"><text>暂时无法加载收入数据</text><button class="secondary-button" bindtap="loadReport">重试</button></view>
+      <block wx:else>
+        <view class="metrics-grid income-metrics">
+          <view><view class="metric-caption"><text class="metric-label">授课收入</text><view class="metric-info" role="button" aria-label="授课收入口径" data-definition="income" bindtap="showDefinitions"><image src="/assets/icons/info-muted.png" /></view></view><view><text class="metric-value">{{income.totalText}}</text><text class="metric-unit">元</text></view></view>
+          <view><text class="metric-label">已计费课程</text><view><text class="metric-value">{{income.pricedLessons}}</text><text class="metric-unit">节</text></view></view>
+          <view><text class="metric-label">平均每节收入</text><view><text class="metric-value">{{income.averageLessonText}}</text><text class="metric-unit">元/节</text></view></view>
+          <view><text class="metric-label">平均每小时收入</text><view><text class="metric-value">{{income.averageHourText}}</text><text class="metric-unit">元/小时</text></view></view>
+        </view>
+        <text class="income-note">签到确认的授课收入，非实际收款</text>
+        <text wx:if="{{income.unpricedLessons}}" class="income-warning">{{income.unpricedLessons}} 节已签到课程未记录费用，不计入收入</text>
+        <view class="insight-section"><view class="insight-section-heading"><text>收入趋势</text><text class="income-chart-unit">元</text></view><canvas type="2d" id="teaching-chart" class="teaching-chart"></canvas><text wx:if="{{!income.pricedLessons}}" class="quiet-empty">本时段暂无已计费课程</text></view>
+        <view class="insight-section"><view class="insight-section-heading"><text>学生收入分布</text></view><text wx:if="{{!incomeStudents.length}}" class="quiet-empty">暂无收入记录</text><view wx:for="{{incomeStudents}}" wx:key="studentId" class="subject-row"><view><text>{{item.name}}</text><text>{{item.lessons}} 节 · {{item.amountText}} 元</text></view><view class="subject-track"><view style="width: {{item.width}}%"></view></view></view></view>
+      </block>
+    </block>
+    <block wx:else>
+    <view class="metrics-grid">
+      <view><view class="metric-caption"><text class="metric-label">签到授课时长</text><view class="metric-info pressable" role="button" aria-label="签到授课时长口径" data-definition="hours" bindtap="showDefinitions"><image src="/assets/icons/info-muted.png" /></view></view><view><text class="metric-value">{{summary.hours}}</text><text class="metric-unit">小时</text></view></view>
+      <view><view class="metric-caption"><text class="metric-label">已签到课程</text><view class="metric-info pressable" role="button" aria-label="已签到课程口径" data-definition="completed" bindtap="showDefinitions"><image src="/assets/icons/info-muted.png" /></view></view><view><text class="metric-value">{{summary.completed}}</text><text class="metric-unit">节</text></view></view>
+      <view><view class="metric-caption"><text class="metric-label">授课学生</text><view class="metric-info pressable" role="button" aria-label="授课学生口径" data-definition="students" bindtap="showDefinitions"><image src="/assets/icons/info-muted.png" /></view></view><view><text class="metric-value">{{summary.taughtStudents}}</text><text class="metric-unit">位</text></view></view>
+      <view><view class="metric-caption"><text class="metric-label">课程出勤率</text><view class="metric-info pressable" role="button" aria-label="课程出勤率口径" data-definition="attendance" bindtap="showDefinitions"><image src="/assets/icons/info-muted.png" /></view></view><view><text class="metric-value">{{summary.attendance}}</text><text class="metric-unit">%</text></view></view>
+    </view>
+    <view class="insight-section">
+      <view class="insight-section-heading"><text>授课分布</text><view class="chart-tabs"><view wx:for="{{modes}}" wx:key="key" class="{{chartMode === item.key ? 'active' : ''}}" data-mode="{{item.key}}" bindtap="chooseChart">{{item.label}}</view></view></view>
+      <view class="distribution-summary"><view class="metric-info pressable" role="button" aria-label="授课分布口径" data-definition="distribution" bindtap="showDefinitions"><image src="/assets/icons/info-muted.png" /></view><text>已排 {{summary.planned}} 节</text><text>未签到 {{summary.pending}} 节</text><text>{{summary.plannedHours}} 小时计划</text></view>
+      <block wx:if="{{chartMode === 'calendar'}}">
+        <view class="month-controls"><view data-offset="-1" bindtap="moveMonth" aria-label="上一月"><image class="back" src="/assets/icons/right-muted.png" /></view><picker mode="date" fields="month" value="{{focus}}" bindchange="chooseMonth"><view role="button" aria-label="选择年份和月份">{{calendarLabel}}</view></picker><view data-offset="1" bindtap="moveMonth" aria-label="下一月"><image src="/assets/icons/right-muted.png" /></view></view>
+        <view class="insight-weekdays"><text wx:for="{{weekdays}}" wx:key="*this">{{item}}</text></view>
+        <view class="insight-calendar"><view wx:for="{{calendarDays}}" wx:key="key" class="insight-day {{item.inMonth && item.enabled ? '' : 'muted'}} {{item.selected ? 'selected' : ''}} {{item.today ? 'today' : ''}}" data-date="{{item.key}}" bindtap="chooseDay"><text class="insight-day-number">{{item.day}}</text><text>{{item.count ? item.count + '节' : item.planned ? '待上' : '—'}}</text></view></view>
+        <view class="selected-day-summary"><text>{{selectedDate}}</text><text>已签到 {{selectedDay.completed || 0}} 节 · 课堂记录 {{selectedDay.records || 0}} 份</text><view class="section-link" bindtap="openSchedule">查看课表</view></view>
+      </block>
+      <block wx:else><text class="chart-unit">签到授课时长 · 小时</text><canvas type="2d" id="teaching-chart" class="teaching-chart"></canvas><text wx:if="{{!summary.completed}}" class="chart-empty">本时段暂无已签到课程</text></block>
+    </view>
+    <view class="insight-section"><view class="insight-section-heading"><text>课程状态</text></view><view class="attendance-track"><view style="width: {{summary.attendanceRate || 0}}%"></view></view><view class="status-columns"><view><text>已签到</text><text>{{summary.completed}}<text>节</text></text></view><view><text>请假</text><text>{{summary.leave}}<text>节</text></text></view><view><text>已取消</text><text>{{summary.cancelled}}<text>节</text></text></view></view></view>
+    <view class="insight-section"><view class="insight-section-heading"><text>科目分布</text></view><text wx:if="{{!subjects.length}}" class="quiet-empty">暂无已签到课程</text><view wx:for="{{subjects}}" wx:key="name" class="subject-row"><view><text>{{item.name}}</text><text>{{item.completed}} 节 · {{item.hours}} 小时</text></view><view class="subject-track"><view style="width: {{item.width}}%"></view></view></view></view>
+    <view class="insight-section"><view class="insight-section-heading"><text>课堂记录</text><view class="metric-info pressable" role="button" aria-label="课堂记录口径" data-definition="records" bindtap="showDefinitions"><image src="/assets/icons/info-muted.png" /></view></view><view class="record-statistics"><view><text>{{summary.records}}</text><text>份课堂记录</text></view><view><text>{{summary.recordedHours}}</text><text>小时记录时长</text></view><view><text>{{summary.teachingDays}}</text><text>天有签到课程</text></view></view></view>
+    </block>
+    <view wx:if="{{error && hasReport}}" class="empty-state"><text>更新失败，当前保留上次数据</text><button class="secondary-button" bindtap="loadReport">重试</button></view>
+  </block>
+</view>
+<recording-float />

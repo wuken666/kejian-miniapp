@@ -1,0 +1,109 @@
+<view class="record-backdrop"></view>
+<view class="record-page record-sheet {{phase !== 'review' ? 'is-recording' : ''}}">
+  <view class="sheet-toolbar"><view wx:if="{{phase === 'review'}}" role="button" bindtap="discardWorkspace">放弃记录</view><view wx:else></view><text>{{phase === 'review' ? '内容整理' : '课程记录'}}</text><view role="button" aria-label="收起录音面板" bindtap="minimizeRecording">收起</view></view>
+  <view wx:if="{{phase !== 'review'}}" class="custom-nav" style="padding-top: {{statusBarHeight}}px; height: {{navigationHeight}}px;">
+    <view class="nav-back pressable" hover-class="pressable-active" role="button" aria-label="收起录音" bindtap="minimizeRecording"><view class="back-icon"><image class="glyph-image" src="/assets/icons/right-white.png" mode="aspectFit" aria-hidden="true" /></view></view>
+    <view class="nav-copy">
+      <text class="nav-eyebrow">{{selectedStudent ? selectedStudent.name + ' · ' + selectedStudent.subject : '课堂记录'}}</text>
+      <text class="nav-title">{{courseTitle || '本节课堂'}}</text>
+    </view>
+    <view wx:if="{{phase === 'recording'}}" class="record-status">
+      <text class="status-dot {{isActivelyRecording ? 'active' : ''}}"></text>
+      <text>{{recordingStatusLabel}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-state"><text></text><text></text><text></text></view>
+
+  <block wx:elif="{{phase !== 'review'}}">
+    <view class="recording-content page-enter">
+      <view class="mic-stage {{recorderState}}">
+        <view class="mic-ring ring-one"></view>
+        <view class="mic-ring ring-two"></view>
+        <view class="mic-core"><view class="icon-mic stage-mic"><image class="glyph-image" src="/assets/icons/record-white.png" mode="aspectFit" aria-hidden="true" /></view></view>
+      </view>
+      <text class="recording-title">{{phase === 'setup' ? (saving ? '正在连接手机麦克风' : activeSession ? '课堂录音已暂停' : '准备记录这节课堂') : recordingTitle}}</text>
+      <view wx:if="{{isActivelyRecording}}" class="wave" aria-label="正在录音"><text></text><text></text><text></text><text></text><text></text><text></text></view>
+      <view wx:else class="recovery-indicator" aria-label="{{recordingStatusLabel}}"><text></text><text></text><text></text></view>
+      <text class="recording-time">{{elapsedLabel}}</text>
+        <text wx:if="{{activeSession}}" class="foreground-note">录音会持续保存在本机；切回小程序时会检查状态并补传内容</text>
+      <view wx:if="{{activeSession}}" class="storage-status {{storageStatusTone}}">
+        <text class="storage-dot"></text>
+        <text>{{storageStatusLabel}}</text>
+      </view>
+
+      <view wx:if="{{audioHealthWarning}}" class="audio-health-banner">
+        <view class="audio-health-icon"><image class="glyph-image" src="/assets/icons/warning-white.png" mode="aspectFit" aria-hidden="true" /></view>
+        <text>{{audioHealthWarning}}</text>
+      </view>
+      <view wx:if="{{storageWarning}}" class="audio-health-banner storage-warning">
+        <view class="audio-health-icon"><image class="glyph-image" src="/assets/icons/warning-white.png" mode="aspectFit" aria-hidden="true" /></view>
+        <text>{{storageWarning}}</text>
+      </view>
+
+      <scroll-view class="transcript-panel" scroll-y enhanced scroll-into-view="{{transcriptScrollTarget}}" show-scrollbar="{{false}}">
+        <view class="transcript-heading"><text>实时文字记录</text><text>{{!activeSession ? '等待开始' : asrState === 'connected' ? '实时记录中' : phase === 'setup' ? '录音已暂停' : '录音仍在保存'}}</text></view>
+        <view class="transcript-body">
+          <text wx:if="{{transcript}}" id="final-line">{{transcript}}</text>
+          <text wx:if="{{partialTranscript}}" id="partial-line" class="partial-line">{{partialTranscript}}</text>
+          <text wx:if="{{!transcript && !partialTranscript}}" class="transcript-placeholder">{{audioFormat === 'webm' ? '开发者工具音频将在暂停或结束后转写。' : '开始说话后，识别到的课堂内容会显示在这里。'}}</text>
+          <view id="transcript-bottom-{{transcriptScrollVersion}}" class="transcript-bottom"></view>
+        </view>
+      </scroll-view>
+
+      <view wx:if="{{errorMessage}}" class="error-banner setup-error"><text>{{errorMessage}}</text><button wx:if="{{!selectedStudent}}" class="retry-button pressable" bindtap="retryWorkspace">重试</button></view>
+      <view wx:if="{{saving}}" class="saving-banner"><text class="spinner"></text>{{processingText}}</view>
+
+      <view class="recording-actions {{saving ? 'is-disabled' : ''}}">
+        <view wx:if="{{!selectedStudent && !errorMessage}}" class="pause-button pressable" role="button" bindtap="closePage"><text>返回课程签到</text></view>
+        <view wx:if="{{phase === 'setup' && selectedStudent}}" class="pause-button pressable" hover-class="pressable-active" role="button" bindtap="startRecording"><view class="icon-mic"><image class="glyph-image" src="/assets/icons/record-white.png" mode="aspectFit" /></view><text>{{storageProtectionActive ? '等待录音同步' : errorMessage ? '重试录音' : activeSession ? '继续录音' : '开始录音'}}</text></view>
+        <view wx:if="{{phase === 'recording'}}" class="pause-button pressable" hover-class="pressable-active" role="button" bindtap="pauseRecording"><view class="pause-icon"><image class="glyph-image" src="/assets/icons/pause-white.png" mode="aspectFit" aria-hidden="true" /></view><text>{{storageProtectionActive ? '返回并保留' : '暂停并保留'}}</text></view>
+        <view wx:if="{{activeSession && !storageProtectionActive}}" class="finish-button pressable" hover-class="pressable-active" role="button" bindtap="finishRecording"><view class="check-icon"><image class="glyph-image" src="/assets/icons/check-white.png" mode="aspectFit" aria-hidden="true" /></view><text>结束并整理</text></view>
+        <view class="delete-button pressable" hover-class="pressable-active" role="button" bindtap="discardWorkspace"><view class="trash-icon"><image class="glyph-image" src="/assets/icons/trash-danger.png" mode="aspectFit" aria-hidden="true" /></view><text>放弃本次录音</text></view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="review-content page-enter">
+      <view class="review-student"><view class="review-avatar">{{selectedStudent.initial || '学'}}</view><view class="review-student-copy"><text>{{selectedStudent.name}}</text><text>{{selectedStudent.subject}}</text></view><text class="review-status">待核对</text></view>
+      <view class="review-section">
+        <text class="review-section-title">课程信息</text>
+        <text class="review-label">课程主题</text>
+        <input class="review-title-input" value="{{review.courseTitle}}" data-field="courseTitle" bindinput="bindReviewField" maxlength="120" placeholder="填写课程主题" disabled="{{saving}}" />
+        <view class="review-meta-grid">
+          <view class="review-meta-field"><text class="review-label">上课日期</text><picker mode="date" value="{{review.lessonDate}}" data-field="lessonDate" bindchange="bindReviewField" disabled="{{saving}}"><view class="review-meta-control"><text>{{review.lessonDate}}</text><image class="review-small-icon" src="/assets/icons/down-muted.png" mode="aspectFit" /></view></picker></view>
+          <view class="review-meta-field"><text class="review-label">记录时长</text><view class="review-meta-control"><input class="review-duration-input" type="number" value="{{review.durationMinutes}}" data-field="durationMinutes" bindinput="bindReviewField" disabled="{{saving}}" /><text class="review-unit">分钟</text></view></view>
+        </view>
+      </view>
+      <view class="review-section">
+        <view class="review-section-heading"><text class="review-section-title">课堂内容</text><text wx:if="{{missingContent}}" class="review-field-state">待补充</text></view>
+        <textarea class="review-textarea review-content-input" value="{{review.content}}" data-field="content" bindinput="bindReviewField" maxlength="10000" placeholder="本节课学习的内容与知识点" disabled="{{saving}}" />
+      </view>
+      <view class="review-section">
+        <view class="review-section-heading"><text class="review-section-title">学生表现</text><text wx:if="{{missingPerformance}}" class="review-field-state">待核对 · 选填</text></view>
+        <view wx:if="{{roleNotice}}" class="review-role-notice"><image class="review-small-icon" src="/assets/icons/info-green.png" mode="aspectFit" /><text>师生角色未确认，请核对学生表现</text></view>
+        <textarea class="review-textarea" value="{{review.performance}}" data-field="performance" bindinput="bindReviewField" maxlength="5000" placeholder="掌握情况、课堂表现或薄弱点" disabled="{{saving}}" />
+      </view>
+      <view class="review-section">
+        <view class="review-section-heading"><text class="review-section-title">课后练习</text><text wx:if="{{missingHomework}}" class="review-field-state">待核对 · 选填</text><view class="review-homework-action pressable" role="button" aria-disabled="{{saving}}" bindtap="setNoHomework">本节无作业</view></view>
+        <textarea class="review-textarea" value="{{review.homework}}" data-field="homework" bindinput="bindReviewField" maxlength="5000" placeholder="未布置时可留空" disabled="{{saving}}" />
+      </view>
+      <view wx:if="{{rawTranscript}}" class="review-section review-source">
+        <view class="review-source-toggle pressable" role="button" aria-expanded="{{showRawTranscript}}" bindtap="toggleRawTranscript"><view><image class="review-small-icon" src="/assets/icons/feedback-muted.png" mode="aspectFit" /><text>原始转写</text></view><image class="review-small-icon {{showRawTranscript ? 'is-expanded' : ''}}" src="/assets/icons/down-muted.png" mode="aspectFit" /></view>
+        <scroll-view wx:if="{{showRawTranscript}}" scroll-y class="review-source-text"><text>{{rawTranscript}}</text></scroll-view>
+      </view>
+      <view wx:if="{{errorMessage}}" class="error-banner light">{{errorMessage}}</view>
+      <view class="review-footer"><view class="review-generate pressable {{saving ? 'is-saving' : ''}}" role="button" aria-disabled="{{saving}}" bindtap="saveLessonAndFeedback"><image class="review-small-icon" src="/assets/icons/sparkles-white.png" mode="aspectFit" /><text>{{saving ? '正在生成反馈…' : '确认并生成反馈'}}</text></view><text class="review-footer-note">生成后由老师确认发送</text></view>
+    </view>
+  </block>
+</view>
+<view wx:if="{{showPrivacyDialog}}" class="privacy-mask">
+  <view class="privacy-dialog">
+    <text class="privacy-title">课堂录音隐私授权</text>
+    <text class="privacy-copy">课见将在你主动开启录音后使用麦克风，记录课堂音频并用于转写、整理课堂记录和生成反馈。</text>
+    <view class="privacy-link" role="button" bindtap="openRecordingPrivacyContract">查看用户隐私保护指引</view>
+    <button id="record-privacy-agree" class="privacy-agree" open-type="agreePrivacyAuthorization" bindagreeprivacyauthorization="agreePrivacyAuthorization">同意并继续</button>
+    <button class="privacy-cancel" bindtap="cancelPrivacyAuthorization">暂不使用</button>
+  </view>
+</view>

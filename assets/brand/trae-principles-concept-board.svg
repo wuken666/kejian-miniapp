@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 640" role="img" aria-label="课见几何图标概念对比">
+  <rect width="1320" height="640" fill="#EDEEEA"/>
+  <g font-family="Microsoft YaHei UI, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="64" y="72" fill="#17201C" font-size="28" font-weight="700">课见 · 几何方向</text>
+    <text x="64" y="108" fill="#747D78" font-size="16">借鉴高对比、粗轮廓和小尺寸辨识度，不复制 TRAE 的窗口结构。</text>
+
+    <g transform="translate(64 156)">
+      <rect width="360" height="420" rx="28" fill="#FFFFFF"/>
+      <image href="concept-kj-monogram.svg" x="52" y="34" width="256" height="256"/>
+      <text x="180" y="332" fill="#17201C" font-size="22" font-weight="700" text-anchor="middle">A · KJ 字母标</text>
+      <text x="180" y="364" fill="#747D78" font-size="15" text-anchor="middle">最像独立科技品牌</text>
+      <image href="concept-kj-monogram.svg" x="150" y="382" width="60" height="60"/>
+    </g>
+
+    <g transform="translate(480 156)">
+      <rect width="360" height="420" rx="28" fill="#FFFFFF"/>
+      <image href="concept-linked-lesson.svg" x="52" y="34" width="256" height="256"/>
+      <text x="180" y="332" fill="#17201C" font-size="22" font-weight="700" text-anchor="middle">B · 连接标</text>
+      <text x="180" y="364" fill="#747D78" font-size="15" text-anchor="middle">老师、学生与 AI 形成连接</text>
+      <image href="concept-linked-lesson.svg" x="150" y="382" width="60" height="60"/>
+    </g>
+
+    <g transform="translate(896 156)">
+      <rect width="360" height="420" rx="28" fill="#FFFFFF"/>
+      <image href="concept-course-frame.svg" x="52" y="34" width="256" height="256"/>
+      <text x="180" y="332" fill="#17201C" font-size="22" font-weight="700" text-anchor="middle">C · 课程框</text>
+      <text x="180" y="364" fill="#747D78" font-size="15" text-anchor="middle">最接近教育与内容整理</text>
+      <image href="concept-course-frame.svg" x="150" y="382" width="60" height="60"/>
+    </g>
+  </g>
+</svg>

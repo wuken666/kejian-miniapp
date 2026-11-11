@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-label="课见 B3 录音图标方案">
+  <rect width="1200" height="600" fill="#ECEDE9"/>
+
+  <g font-family="Microsoft YaHei UI, Microsoft YaHei, PingFang SC, sans-serif" fill="#17201C">
+    <text x="64" y="66" font-size="28" font-weight="700">课见 · B3</text>
+    <text x="64" y="100" font-size="16" fill="#68716C">录音是主业务，AI 是状态变化</text>
+  </g>
+
+  <g transform="translate(64 140)">
+    <rect width="320" height="320" rx="70" fill="#103B32"/>
+    <g transform="translate(32 32)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+      <path d="M76 68h104v78H76z"/>
+      <path d="M116 146v18c0 20-14 30-36 30"/>
+      <path d="M142 146v24c0 16 12 24 34 24"/>
+    </g>
+    <g transform="translate(32 32)" fill="#7BC3A5">
+      <rect x="104" y="101" width="8" height="10" rx="4"/>
+      <rect x="124" y="95" width="8" height="22" rx="4" fill="#B8E8D4"/>
+      <rect x="144" y="101" width="8" height="10" rx="4"/>
+    </g>
+  </g>
+
+  <g transform="translate(440 140)" font-family="Microsoft YaHei UI, Microsoft YaHei, PingFang SC, sans-serif">
+    <text x="0" y="28" font-size="23" font-weight="700" fill="#17201C">同一个位置，表达三个阶段</text>
+    <text x="0" y="62" font-size="15" fill="#68716C">图形主体不动，只让中间区域承担状态反馈。</text>
+
+    <g transform="translate(0 100)">
+      <rect width="136" height="136" rx="30" fill="#103B32"/>
+      <g transform="scale(.53125)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+        <path d="M76 68h104v78H76z"/>
+        <path d="M116 146v18c0 20-14 30-36 30"/>
+        <path d="M142 146v24c0 16 12 24 34 24"/>
+      </g>
+      <g transform="scale(.53125)" fill="#7BC3A5">
+        <rect x="104" y="102" width="8" height="8" rx="4"/>
+        <rect x="124" y="99" width="8" height="14" rx="4" fill="#B8E8D4"/>
+        <rect x="144" y="102" width="8" height="8" rx="4"/>
+      </g>
+      <text x="0" y="166" font-size="15" font-weight="700" fill="#17201C">等待录音</text>
+      <text x="0" y="190" font-size="13" fill="#68716C">音频柱保持安静</text>
+    </g>
+
+    <g transform="translate(176 100)">
+      <rect width="136" height="136" rx="30" fill="#103B32"/>
+      <g transform="scale(.53125)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+        <path d="M76 68h104v78H76z"/>
+        <path d="M116 146v18c0 20-14 30-36 30"/>
+        <path d="M142 146v24c0 16 12 24 34 24"/>
+      </g>
+      <g transform="scale(.53125)" fill="#7BC3A5">
+        <rect x="104" y="97" width="8" height="18" rx="4"/>
+        <rect x="124" y="92" width="8" height="28" rx="4" fill="#B8E8D4"/>
+        <rect x="144" y="100" width="8" height="12" rx="4"/>
+      </g>
+      <text x="0" y="166" font-size="15" font-weight="700" fill="#17201C">录音中</text>
+      <text x="0" y="190" font-size="13" fill="#68716C">三柱错峰轻微呼吸</text>
+    </g>
+
+    <g transform="translate(352 100)">
+      <rect width="136" height="136" rx="30" fill="#103B32"/>
+      <g transform="scale(.53125)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+        <path d="M76 68h104v78H76z"/>
+        <path d="M116 146v18c0 20-14 30-36 30"/>
+        <path d="M142 146v24c0 16 12 24 34 24"/>
+        <path d="M96 106h64" stroke="#547B6C" stroke-width="16"/>
+        <path d="M120 106h24" stroke="#C9F2E0" stroke-width="16"/>
+      </g>
+      <text x="0" y="166" font-size="15" font-weight="700" fill="#17201C">AI 整理中</text>
+      <text x="0" y="190" font-size="13" fill="#68716C">音频柱收束成处理轨道</text>
+    </g>
+
+    <g transform="translate(0 350)" fill="#17201C">
+      <text x="0" y="20" font-size="14" fill="#68716C">小尺寸</text>
+      <g transform="translate(74 0)">
+        <rect width="32" height="32" rx="7" fill="#103B32"/>
+        <g transform="scale(.125)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+          <path d="M76 68h104v78H76z"/>
+          <path d="M116 146v18c0 20-14 30-36 30"/>
+          <path d="M142 146v24c0 16 12 24 34 24"/>
+        </g>
+        <g transform="scale(.125)" fill="#7BC3A5">
+          <rect x="104" y="101" width="8" height="10" rx="4"/>
+          <rect x="124" y="95" width="8" height="22" rx="4" fill="#B8E8D4"/>
+          <rect x="144" y="101" width="8" height="10" rx="4"/>
+        </g>
+        <text x="16" y="52" text-anchor="middle" font-size="12" fill="#68716C">32</text>
+      </g>
+      <g transform="translate(130 -8)">
+        <rect width="48" height="48" rx="11" fill="#103B32"/>
+        <g transform="scale(.1875)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+          <path d="M76 68h104v78H76z"/>
+          <path d="M116 146v18c0 20-14 30-36 30"/>
+          <path d="M142 146v24c0 16 12 24 34 24"/>
+        </g>
+        <g transform="scale(.1875)" fill="#7BC3A5">
+          <rect x="104" y="101" width="8" height="10" rx="4"/>
+          <rect x="124" y="95" width="8" height="22" rx="4" fill="#B8E8D4"/>
+          <rect x="144" y="101" width="8" height="10" rx="4"/>
+        </g>
+        <text x="24" y="68" text-anchor="middle" font-size="12" fill="#68716C">48</text>
+      </g>
+      <g transform="translate(206 -16)">
+        <rect width="64" height="64" rx="14" fill="#103B32"/>
+        <g transform="scale(.25)" fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+          <path d="M76 68h104v78H76z"/>
+          <path d="M116 146v18c0 20-14 30-36 30"/>
+          <path d="M142 146v24c0 16 12 24 34 24"/>
+        </g>
+        <g transform="scale(.25)" fill="#7BC3A5">
+          <rect x="104" y="101" width="8" height="10" rx="4"/>
+          <rect x="124" y="95" width="8" height="22" rx="4" fill="#B8E8D4"/>
+          <rect x="144" y="101" width="8" height="10" rx="4"/>
+        </g>
+        <text x="32" y="84" text-anchor="middle" font-size="12" fill="#68716C">64</text>
+      </g>
+      <text x="300" y="20" font-size="14" fill="#68716C">录音动画仅在实际录音状态出现</text>
+    </g>
+  </g>
+</svg>

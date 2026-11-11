@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="课见 AI 自动整理动态图标">
+  <style>
+    .scan {
+      animation: scan-track 1.35s linear infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    @keyframes scan-track {
+      0% {
+        opacity: 0;
+        transform: translateX(-28px);
+      }
+      14% {
+        opacity: 1;
+      }
+      86% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(104px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scan {
+        animation: none;
+        opacity: 0;
+      }
+    }
+  </style>
+
+  <defs>
+    <clipPath id="track-clip">
+      <rect x="88" y="98" width="80" height="16" rx="8"/>
+    </clipPath>
+  </defs>
+
+  <rect width="256" height="256" rx="56" fill="#103B32"/>
+  <g fill="none" stroke="#F5F3EC" stroke-linecap="round" stroke-linejoin="round" stroke-width="20">
+    <path d="M76 68h104v78H76z"/>
+    <path d="M116 146v18c0 20-14 30-36 30"/>
+    <path d="M142 146v24c0 16 12 24 34 24"/>
+  </g>
+  <path d="M96 106h64" fill="none" stroke="#547B6C" stroke-linecap="round" stroke-width="16"/>
+  <rect class="scan" x="84" y="98" width="28" height="16" rx="8" fill="#C9F2E0" clip-path="url(#track-clip)"/>
+</svg>

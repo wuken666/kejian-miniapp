@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="课见连接标概念">
+  <rect width="256" height="256" rx="54" fill="#F7F6F2"/>
+  <path d="M58 62h82v26H84v58H58z" fill="#173D34"/>
+  <path d="M198 194h-82v-26h56v-58h26z" fill="#173D34"/>
+  <rect x="109" y="109" width="38" height="38" rx="8" fill="#173D34" transform="rotate(45 128 128)"/>
+</svg>

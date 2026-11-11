@@ -1,0 +1,1 @@
+<view wx:if="{{visible}}" class="recording-float {{active ? 'active' : ''}}" style="top:{{top}}" role="button" aria-label="打开课堂录音，{{label}}" bindtap="open" bindtouchstart="dragStart" catchtouchmove="dragMove"><image class="float-icon" src="/assets/icons/record-white.png" mode="aspectFit" /><text class="float-label">{{label}}</text></view>

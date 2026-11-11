@@ -1,0 +1,119 @@
+<view wx:if="{{!showEditor && !detail}}" class="page-shell schedule-page">
+  <view wx:if="{{showDayList}}" class="daily-list-toolbar"><view class="pressable" role="button" bindtap="closeDayList">返回月历</view><text>课程与签到</text></view>
+  <view wx:if="{{!showDayList}}" class="calendar-toolbar">
+    <view class="month-navigation">
+      <view class="month-arrow pressable" role="button" aria-label="{{mode === 'week' ? '上一周' : '上个月'}}" data-offset="-1" bindtap="movePeriod"><view class="chevron-icon previous"><image class="glyph-image" src="/assets/icons/right-muted.png" mode="aspectFit" aria-hidden="true" /></view></view>
+      <picker mode="date" fields="month" value="{{selectedDate}}" bindchange="chooseMonth"><view class="month-title pressable" role="button" aria-label="选择年份和月份">{{monthLabel}}</view></picker>
+      <view class="month-arrow pressable" role="button" aria-label="{{mode === 'week' ? '下一周' : '下个月'}}" data-offset="1" bindtap="movePeriod"><view class="chevron-icon"><image class="glyph-image" src="/assets/icons/right-muted.png" mode="aspectFit" aria-hidden="true" /></view></view>
+    </view>
+    <view class="calendar-actions">
+      <view class="today-control pressable" role="button" bindtap="goToday">今天</view>
+      <view class="view-control pressable" role="button" aria-label="{{mode === 'week' ? '切换到月历' : '切换到周视图'}}" data-mode="{{mode === 'week' ? 'month' : 'week'}}" bindtap="changeMode"><view class="view-icon {{mode}}"><image class="glyph-image" src="/assets/icons/{{mode === 'week' ? 'schedule' : 'list'}}-green.png" mode="aspectFit" aria-hidden="true" /></view></view>
+    </view>
+  </view>
+
+  <view wx:if="{{!showDayList && mode === 'week'}}" class="week-strip">
+    <view wx:for="{{weekDays}}" wx:key="key" class="week-day pressable {{item.selected ? 'selected' : ''}} {{item.isToday ? 'is-today' : ''}}" role="button" aria-label="{{item.label}}，{{item.count}}节课程" data-date="{{item.key}}" bindtap="chooseDay">
+      <text class="week-name">{{item.weekdayLabel}}</text><text class="week-number">{{item.day}}</text><view class="week-dot {{item.count ? 'has-lessons' : ''}}"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{!showDayList && mode === 'month'}}" class="calendar-month-view">
+    <view class="weekday-row"><text wx:for="{{weekdayLabels}}" wx:key="*this">{{item}}</text></view>
+    <view class="month-grid">
+      <view wx:for="{{calendarDays}}" wx:key="key" class="calendar-day pressable {{item.inMonth ? '' : 'outside-month'}} {{item.selected ? 'selected' : ''}} {{item.isToday ? 'is-today' : ''}}" role="button" aria-label="{{item.label}}，{{item.count}}节课" data-date="{{item.key}}" bindtap="chooseDay">
+        <text class="calendar-day-number">{{item.day}}</text><view class="calendar-dots"><view wx:for="{{item.dots}}" wx:for-item="dot" wx:key="*this" class="calendar-dot"></view></view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{showDayList && !loading && !error && overdueLessons.length}}" class="overdue-section">
+    <view class="overdue-heading"><text>历史待签到</text><text>{{overdueLessons.length}} 节</text></view>
+    <view wx:for="{{overdueLessons}}" wx:key="id" class="overdue-row pressable" role="button" data-id="{{item.id}}" bindtap="openDetail">
+      <view class="overdue-time"><text>{{item.start}}</text><text>{{item.lessonDate}}</text></view>
+      <view class="overdue-person"><text>{{item.studentName}}</text><text>{{item.subject}} · {{item.durationMinutes}} 分钟</text></view>
+      <view class="overdue-sign pressable" role="button" aria-label="为{{item.studentName}}签到" aria-disabled="{{saving}}" data-id="{{item.id}}" catchtap="signOverdue">签到</view>
+    </view>
+  </view>
+  <view class="selected-day-heading"><view><text class="selected-date">{{dayLabel}}</text><text class="course-count">{{dayLessons.length}} 节课程</text></view></view>
+
+  <view wx:if="{{loading}}" class="schedule-state">正在加载课表…</view>
+  <view wx:elif="{{error}}" class="schedule-state"><text>课表暂时加载失败</text><button class="secondary-button retry-button" bindtap="loadSchedule">重试</button></view>
+  <view wx:elif="{{!showDayList && mode === 'week'}}" class="timeline-canvas" style="height:{{timelineHeight}}rpx">
+    <view wx:for="{{timelineHours}}" wx:key="hour" class="timeline-hour" style="top:{{item.offset}}rpx"><text>{{item.label}}</text><view></view></view>
+    <view wx:for="{{timelineLessons}}" wx:key="id" class="timeline-lesson pressable status-{{item.status}}" style="top:{{item.top}}rpx;height:{{item.height}}rpx" role="button" data-id="{{item.id}}" bindtap="openDetail">
+      <text class="timeline-lesson-title">{{item.courseTitle}}</text><text>{{item.start}} · {{item.studentName}}</text>
+    </view>
+  </view>
+  <view wx:elif="{{!dayLessons.length}}" class="schedule-state empty-state"><view class="empty-calendar-icon"><image class="glyph-image" src="/assets/icons/calendar-green.png" mode="aspectFit" aria-hidden="true" /></view><text>当天暂无课程</text></view>
+
+  <block wx:else>
+      <view wx:for="{{dayLessons}}" wx:for-item="lesson" wx:key="id" class="lesson-row pressable status-{{lesson.status}}" role="button" data-id="{{lesson.id}}" bindtap="openDetail">
+        <view class="lesson-time"><text>{{lesson.start}}</text><text>{{lesson.end}}</text></view><view class="lesson-accent"></view>
+        <view class="lesson-copy"><text class="lesson-title">{{lesson.courseTitle}}</text><text class="lesson-meta">{{lesson.studentName}} · {{lesson.subject}}</text></view>
+        <text class="lesson-status">{{lesson.statusLabel}}</text><view class="chevron-icon lesson-chevron"><image class="glyph-image" src="/assets/icons/right-muted.png" mode="aspectFit" aria-hidden="true" /></view>
+      </view>
+  </block>
+
+  <view class="schedule-add-float pressable" role="button" aria-label="添加上课日程" bindtap="openCreate"><view class="plus-icon"><image class="glyph-image" src="/assets/icons/plus-white.png" mode="aspectFit" aria-hidden="true" /></view></view>
+</view>
+
+<view wx:if="{{detail && !showEditor}}" class="course-detail">
+  <view class="course-detail-toolbar">
+    <view class="course-icon-button pressable" role="button" aria-label="关闭课程详情" bindtap="closeDetail"><image src="/assets/icons/close-green.png" mode="aspectFit" /></view>
+    <text>课程详情</text>
+    <view class="course-icon-button {{detail.status === 'COMPLETED' ? 'unavailable' : 'pressable'}}" role="button" aria-label="编辑课程" aria-disabled="{{detail.status === 'COMPLETED' || saving}}" bindtap="openEdit"><image src="/assets/icons/edit-green.png" mode="aspectFit" /></view>
+  </view>
+  <scroll-view class="course-detail-scroll" scroll-y enable-flex>
+    <view class="course-person"><view class="course-avatar">{{detail.initial}}</view><view class="course-person-copy"><text>{{detail.studentName}}</text><text>{{detail.subject}}</text></view><text class="course-badge status-{{detail.status}}">{{detail.statusLabel}}</text></view>
+    <view class="course-facts">
+      <view><text>课程主题</text><text>{{detail.courseTitle}}</text></view>
+      <view><text>日期</text><text>{{detail.dateLabel}}</text></view>
+      <view><text>时间</text><text>{{detail.start}} – {{detail.end}}</text></view>
+      <view><text>课程时长</text><text>{{detail.durationMinutes}} 分钟</text></view>
+      <view wx:if="{{detail.status === 'COMPLETED'}}"><text>授课收入</text><text>{{detail.incomeLabel}}</text></view>
+    </view>
+    <view class="course-section">
+      <text class="course-section-title">课程签到</text>
+      <view class="course-attendance"><view class="attendance-symbol"><image src="/assets/icons/{{detail.status === 'COMPLETED' ? 'check' : detail.status === 'SCHEDULED' ? 'schedule' : 'info'}}-green.png" mode="aspectFit" /></view><view><text>{{detail.status === 'COMPLETED' ? '本节课已签到' : detail.status === 'LEAVE' ? '学生本节请假' : detail.status === 'CANCELLED' ? '本节课程已取消' : '本节课尚未签到'}}</text><text>{{detail.status === 'COMPLETED' ? '已按计划时长计入统计' : '尚未计入签到授课时长'}}</text></view></view>
+      <view role="button" wx:if="{{detail.status === 'SCHEDULED'}}" class="course-confirm pressable" aria-disabled="{{saving}}" data-status="COMPLETED" bindtap="changeStatus"><image src="/assets/icons/check-white.png" mode="aspectFit" /><text>签到</text></view>
+      <view role="button" wx:else class="course-restore pressable" aria-disabled="{{saving}}" data-status="SCHEDULED" bindtap="changeStatus"><image src="/assets/icons/refresh-green.png" mode="aspectFit" /><text>{{detail.status === 'COMPLETED' ? '撤销签到' : '恢复为未签到'}}</text></view>
+    </view>
+    <view class="course-section">
+      <text class="course-section-title">课程操作</text>
+      <view role="button" wx:if="{{detail.status === 'COMPLETED'}}" class="course-record pressable" aria-disabled="{{saving}}" bindtap="startRecord"><image src="/assets/icons/record-green.png" mode="aspectFit" /><text>课程记录</text><image class="course-operation-arrow" src="/assets/icons/right-muted.png" mode="aspectFit" /></view>
+      <view class="course-operation-grid">
+        <view role="button" wx:if="{{detail.status !== 'COMPLETED'}}" class="course-operation pressable" aria-disabled="{{saving}}" bindtap="openEdit"><image src="/assets/icons/edit-green.png" mode="aspectFit" /><text>编辑 / 改期</text></view>
+        <view role="button" wx:if="{{detail.status === 'SCHEDULED'}}" class="course-operation pressable" aria-disabled="{{saving}}" data-status="LEAVE" bindtap="changeStatus"><image src="/assets/icons/students-green.png" mode="aspectFit" /><text>学生请假</text></view>
+        <view role="button" wx:if="{{detail.status === 'SCHEDULED'}}" class="course-operation caution pressable" aria-disabled="{{saving}}" data-status="CANCELLED" bindtap="changeStatus"><image src="/assets/icons/close-danger.png" mode="aspectFit" /><text>取消课程</text></view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<view wx:if="{{showEditor}}" class="schedule-editor">
+  <view class="editor-toolbar">
+    <view class="editor-icon-button pressable" role="button" aria-label="关闭" bindtap="closeEditor"><view class="close-icon"><image class="glyph-image" src="/assets/icons/close-green.png" mode="aspectFit" aria-hidden="true" /></view></view>
+    <text>{{editingId ? '编辑上课日程' : '添加上课日程'}}</text>
+    <view class="editor-icon-button confirm pressable" role="button" aria-label="保存课程" bindtap="saveLesson" aria-disabled="{{saving}}"><view class="check-icon"><image class="glyph-image" src="/assets/icons/check-white.png" mode="aspectFit" aria-hidden="true" /></view></view>
+  </view>
+  <scroll-view class="editor-scroll" scroll-y="true" enable-flex="true">
+    <view class="editor-section">
+      <text class="editor-section-title">学生与课程</text>
+      <view class="editor-row"><text class="editor-label">学生</text><picker range="{{studentNames}}" value="{{form.studentIndex}}" bindchange="updateStudent"><view class="editor-control"><text class="editor-control-text">{{selectedStudentName}}</text><view class="chevron-icon"><image class="glyph-image" src="/assets/icons/right-muted.png" mode="aspectFit" aria-hidden="true" /></view></view></picker></view>
+      <view class="editor-row"><text class="editor-label">课程类型</text><view class="editor-control static-control"><text class="editor-control-text">{{selectedStudentSubject || '请先选择学生'}}</text></view></view>
+      <view class="editor-row"><text class="editor-label">课程主题（选填）</text><input class="editor-control editor-input" maxlength="120" placeholder="留空则使用学科名称" value="{{form.courseTitle}}" bindinput="updateTitle" /></view>
+    </view>
+    <view class="editor-section">
+      <text class="editor-section-title">时间安排</text>
+      <view class="schedule-field-grid">
+        <picker class="schedule-field" mode="date" value="{{form.lessonDate}}" bindchange="updateDate"><view class="schedule-field-control"><view class="field-caption"><image src="/assets/icons/calendar-danger.png" /><text>日期</text></view><text>{{form.dateLabel}}</text><image src="/assets/icons/down-muted.png" /></view></picker>
+        <picker class="schedule-field" mode="time" value="{{form.startTime}}" bindchange="updateTime"><view class="schedule-field-control"><view class="field-caption"><image src="/assets/icons/schedule-danger.png" /><text>开始时间</text></view><text>{{form.startTime}}</text><image src="/assets/icons/down-muted.png" /></view></picker>
+        <picker class="schedule-field duration-field" range="{{durationOptions}}" value="{{form.durationIndex}}" bindchange="updateDuration"><view class="schedule-field-control"><view class="field-caption"><image src="/assets/icons/schedule-danger.png" /><text>课程时长</text></view><text>{{durationOptions[form.durationIndex]}}</text><image src="/assets/icons/down-muted.png" /></view></picker>
+        <picker wx:if="{{!editingId}}" class="schedule-field repeat-field" range="{{repeatOptions}}" value="{{form.repeatIndex}}" bindchange="updateRepeat"><view class="schedule-field-control"><view class="field-caption"><image src="/assets/icons/refresh-danger.png" /><text>重复模式</text></view><text>{{repeatOptions[form.repeatIndex]}}</text><image src="/assets/icons/down-muted.png" /></view></picker>
+        <picker wx:if="{{!editingId && form.repeatIndex}}" class="schedule-field repeat-field" range="{{repeatCounts}}" value="{{form.repeatCountIndex}}" bindchange="updateRepeatCount"><view class="schedule-field-control"><view class="field-caption"><image src="/assets/icons/list-danger.png" /><text>排课次数（含本次）</text></view><text>{{repeatCounts[form.repeatCountIndex]}} 次</text><image src="/assets/icons/down-muted.png" /></view></picker>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+<recording-float />

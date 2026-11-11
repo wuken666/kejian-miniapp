@@ -1,0 +1,59 @@
+.students-page{padding-top:30rpx}.compact-header{align-items:center;margin-bottom:22rpx}.add-button{display:flex;align-items:center;justify-content:center;gap:6rpx;min-width:126rpx;height:68rpx;border-radius:14rpx;background:#e1f0e9;color:#174e3e;font-size:25rpx;font-weight:700}.add-button text{font-size:34rpx;font-weight:400}.empty-avatar{display:flex;align-items:center;justify-content:center;width:92rpx;height:92rpx;margin:0 auto 22rpx;border-radius:50%;background:#e2f0ea;color:#174e3e;font-size:34rpx;font-weight:700}.student-tabs{width:calc(100% + 32rpx);margin:0 -16rpx 24rpx;white-space:nowrap}.student-tabs-inner{display:flex;gap:12rpx;padding:3rpx 16rpx 12rpx}.student-tab{display:flex;flex:0 0 auto;align-items:center;justify-content:center;width:108rpx;height:84rpx;border:1rpx solid #dce4df;border-radius:14rpx;background:#fff;color:#5f6c66;font-size:26rpx;font-weight:700}.student-tab.active{border-color:#a7ccbd;background:#dff0e8;color:#174e3e;box-shadow:0 8rpx 18rpx rgba(23,78,62,.08);transform:translateY(-2rpx)}.student-detail{padding:28rpx}.detail-enter{animation:detail-enter 200ms cubic-bezier(.23,1,.32,1) both}.student-detail-header{display:flex;align-items:center}.detail-avatar{display:flex;align-items:center;justify-content:center;width:88rpx;height:88rpx;flex:0 0 auto;border-radius:50%;background:#dcece5;color:#174e3e;font-size:30rpx;font-weight:700}.detail-identity{display:flex;min-width:0;margin-left:18rpx;flex-direction:column}.detail-name{font-size:33rpx;font-weight:700}.detail-meta{margin-top:5rpx;color:#76817c;font-size:24rpx}.edit-button{display:flex;align-items:center;justify-content:center;width:62rpx;height:62rpx;margin-left:auto;border-radius:50%;background:#f0f4f2;color:#456158;font-size:29rpx}.detail-divider{height:1rpx;margin:24rpx 0;background:#e7ece9}.detail-grid{display:grid;grid-template-columns:minmax(0,1fr) 130rpx;gap:22rpx}.detail-field{display:flex;flex-direction:column}.detail-label{color:#7a8580;font-size:23rpx}.detail-value{margin-top:8rpx;font-size:26rpx;line-height:1.55}.detail-value.muted{color:#8a948f}.detail-value.count{font-size:32rpx;font-weight:700}.lesson-button{display:grid;grid-template-columns:30rpx minmax(0,1fr) 24rpx;align-items:center;width:100%;min-height:88rpx;margin-top:26rpx;padding:0 22rpx;border-radius:13rpx;background:#174e3e;color:#fff;font-size:26rpx;font-weight:700;text-align:left}.lesson-button > text{font-size:26rpx;font-weight:700}.loading-state.compact,.empty-state.compact{padding:46rpx 24rpx}.lesson-list{overflow:hidden}.lesson-row{display:grid;grid-template-columns:12rpx minmax(0,1fr) 28rpx;align-items:center;width:100%;padding:25rpx 23rpx;border-bottom:1rpx solid #edf1ee;background:#fff;text-align:left}.lesson-row:last-child{border-bottom:0}.lesson-date-mark{width:10rpx;height:10rpx;border-radius:50%;background:#4a8d76;box-shadow:0 0 0 8rpx #e5f1ec}.lesson-copy{display:flex;min-width:0;margin-left:16rpx;flex-direction:column}.lesson-heading{display:flex;align-items:center;gap:12rpx}.lesson-title{min-width:0;flex:1;overflow:hidden;font-size:27rpx;font-weight:700;text-overflow:ellipsis;white-space:nowrap}.lesson-summary{display:-webkit-box;margin-top:10rpx;overflow:hidden;color:#58655f;font-size:24rpx;line-height:1.55;-webkit-box-orient:vertical;-webkit-line-clamp:2}.lesson-date{margin-top:10rpx;color:#8a938f;font-size:21rpx}.lesson-arrow{color:#7d8b84;font-size:38rpx}.field-row{display:grid;grid-template-columns:1fr 1fr;gap:18rpx}.picker-value{display:flex;align-items:center}.delete-student{width:100%;margin-top:20rpx}.lesson-sheet{max-height:92vh}@keyframes detail-enter{from{opacity:0;transform:translateX(14rpx)}to{opacity:1;transform:translateX(0)}}@media(prefers-reduced-motion:reduce){.detail-enter{animation:none}}
+
+.empty-primary-action{display:grid;width:100%;min-height:94rpx;padding:0 18rpx;grid-template-columns:56rpx minmax(0,1fr) 56rpx;align-items:center;border-radius:14rpx;background:#174e3e;color:#fff;font-size:28rpx;font-weight:700}.empty-primary-action>text{min-width:0;text-align:center}.empty-action-side{display:flex;width:56rpx;height:56rpx;align-items:center;justify-content:center}.empty-action-side:first-child{border-radius:12rpx;background:rgba(255,255,255,.1);color:#a6e7ce}.empty-action-side:last-child{color:#d8ede5}
+
+/* 学生横向切换后让档案内容轻量入场，减少静态页面的跳变感。 */
+.detail-swap{animation:detail-swap 240ms cubic-bezier(.23,1,.32,1) both}
+@keyframes detail-swap{from{opacity:0;transform:translateX(18rpx) scale(.99)}to{opacity:1;transform:translateX(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.detail-swap{animation:none}}
+
+/* 学生 Tab 选中时平滑抬升，和档案内容入场保持同一条动线。 */
+.student-tab {
+  transition: transform 180ms cubic-bezier(.23,1,.32,1), background-color 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out, box-shadow 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .student-tab {
+    transition: none;
+  }
+}
+
+/* 避免原生 button 和 grid 在不同基础库下产生拉伸。 */
+.add-button{width:126rpx;min-width:126rpx;max-width:126rpx;flex:0 0 126rpx}.add-button text{font-size:25rpx;font-weight:700}.student-tabs-inner{display:inline-flex;width:auto}.student-tab{width:108rpx;min-width:108rpx;max-width:108rpx;flex:0 0 108rpx}.detail-identity{flex:1}.edit-button{width:62rpx;min-width:62rpx;max-width:62rpx;flex:0 0 62rpx;padding:0}.detail-grid{display:flex}.detail-grid>.detail-field:first-child{min-width:0;flex:1}.count-field{width:130rpx;flex:0 0 130rpx}.lesson-button{display:flex;width:100%;gap:14rpx;text-align:left}.lesson-button>text{min-width:0;flex:1}.lesson-row{display:flex;width:100%}.lesson-date-mark{flex:0 0 10rpx}.lesson-copy{min-width:0;flex:1}.lesson-arrow{flex:0 0 15rpx;margin-right:6rpx}.section-heading>view{display:flex;flex-direction:column;gap:5rpx}.section-copy{color:#818b86;font-size:22rpx}.field-row{display:flex}.field-row>.field{width:calc((100% - 18rpx)/2);flex:1 1 0}
+page { background: #fff; }
+.students-page { background: #fff; padding-top: 24rpx; }
+.student-add-float { position: fixed; z-index: 20; right: 38rpx; bottom: calc(136rpx + env(safe-area-inset-bottom)); display: flex; width: 96rpx; height: 96rpx; align-items: center; justify-content: center; border: 1rpx solid rgba(255,255,255,.35); border-radius: 50%; background: #174e3e; color: #fff; box-shadow: 0 10rpx 24rpx rgba(21, 63, 47, .2); }
+.students-page .page-title { font-size: 40rpx; }
+.student-search { display: block; box-sizing: border-box; width: 100%; height: 84rpx; margin-bottom: 22rpx; padding: 0 24rpx; border-radius: 999rpx; background: #f1f4f2; color: #213a2c; font-size: 25rpx; }
+.student-list-count { display: block; padding: 28rpx 0 10rpx; color: #87938a; font-size: 23rpx; }
+.student-directory-row { display: flex; min-height: 136rpx; align-items: center; gap: 20rpx; border-bottom: 1rpx solid #e8ece9; }
+.directory-avatar { display: flex; width: 76rpx; height: 76rpx; flex: 0 0 76rpx; align-items: center; justify-content: center; border-radius: 50%; background: #e7f1eb; color: #34634d; font-size: 25rpx; font-weight: 650; }
+.directory-copy { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 10rpx; }
+.directory-copy text:first-child { font-size: 29rpx; font-weight: 650; }
+.directory-copy text:last-child { color: #8a948d; font-size: 23rpx; }
+.directory-lessons { display: flex; align-items: flex-end; flex-direction: column; gap: 5rpx; }
+.directory-lessons text:first-child { font-size: 28rpx; font-weight: 650; color: #3b6c53; }
+.directory-lessons text:last-child { font-size: 20rpx; color: #949e97; }
+.student-directory-row > image { width: 28rpx; height: 28rpx; }
+.student-search-empty { display: block; padding: 70rpx 0; text-align: center; color: #8a958e; font-size: 25rpx; }
+.directory-back { display: flex; align-items: center; gap: 8rpx; margin-bottom: 20rpx; color: #6d8074; font-size: 25rpx; }
+.directory-back image { width: 32rpx; height: 32rpx; transform: rotate(180deg); }
+.students-page .student-detail { box-shadow: none; background: #f6f8f6; border-color: #e6ede7; border-radius: 8rpx; }
+.directory-copy .directory-meta { color: #8a948d; font-size: 23rpx; }
+.directory-address { display: block; overflow-wrap: anywhere; white-space: normal; line-height: 1.5; }
+.student-directory-row { padding-top: 20rpx; padding-bottom: 20rpx; }
+.detail-address { display: flex; flex-direction: column; gap: 10rpx; padding-bottom: 24rpx; }
+.address-input { height: 112rpx; min-height: 112rpx; }
+.lesson-datetime { display: flex; flex: 0 0 150rpx; width: 150rpx; flex-direction: column; gap: 7rpx; align-self: stretch; justify-content: center; padding-right: 14rpx; border-right: 1rpx solid #e4ebe6; }
+.lesson-year { font-size: 21rpx; color: #87948b; line-height: 1.4; }
+.lesson-day { font-size: 25rpx; font-weight: 700; color: #243b2e; line-height: 1.5; white-space: nowrap; }
+.lesson-start-time { font-size: 26rpx; font-weight: 650; color: #386e56; line-height: 1.4; }
+.lesson-start-time.time-unknown { font-size: 20rpx; font-weight: 400; color: #8a948d; white-space: nowrap; }
+.student-status-tabs { display: flex; width: 100%; gap: 8rpx; padding: 6rpx; border-radius: 8rpx; background: #f0f3f1; }
+.student-status-tab { display: flex; flex: 1; min-width: 0; height: 72rpx; align-items: center; justify-content: center; gap: 12rpx; border-radius: 6rpx; color: #78867d; font-size: 26rpx; font-weight: 600; }
+.student-status-tab.selected { background: #e0eee7; color: #245e4e; }
+.student-graduated-label { display: block; margin-top: 8rpx; color: #8a7867; font-size: 23rpx; }
+.student-graduation-button { display: flex; width: 100%; min-height: 84rpx; gap: 14rpx; justify-content: center; align-items: center; margin-top: 24rpx; border: 1rpx solid #d6e4dc; border-radius: 8rpx; background: #fff; color: #245e4e; font-size: 26rpx; font-weight: 600; }
+.student-graduation-button image { width: 32rpx; height: 32rpx; }
+.student-graduation-button.graduation-red { color: #b84343; border-color: #edcece; background: #fff5f5; }
+.student-graduation-button[aria-disabled="true"] { opacity: .5; }

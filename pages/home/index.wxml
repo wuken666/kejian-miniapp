@@ -1,0 +1,51 @@
+<view class="page-shell home-page">
+  <view class="home-greeting"><view><text>{{todayLabel}}</text><text>{{greeting}}，{{teacherName}}</text></view><view class="teacher-avatar pressable" role="button" aria-label="我的账号" bindtap="openProfile"><image wx:if="{{teacherAvatar}}" src="{{teacherAvatar}}" mode="aspectFill" /><text wx:else>{{profileInitial}}</text></view></view>
+  <view class="home-week"><view wx:for="{{weekDays}}" wx:key="key" class="{{item.selected ? 'selected' : ''}}" role="button" data-date="{{item.key}}" bindtap="chooseDay"><text>周{{item.weekday}}</text><text>{{item.day}}</text><view class="day-dot {{item.count ? 'has-lessons' : ''}}"></view></view></view>
+  <view wx:if="{{loading}}" class="loading-state">正在加载…</view>
+  <view wx:elif="{{authRequired || serviceBlocked}}" class="home-gate"><text>{{authRequired ? '请先登录' : '暂时无法连接服务'}}</text><button class="primary-button" loading="{{authRetrying}}" bindtap="retryLogin" wx:if="{{authRequired}}">登录课见</button><button wx:else class="primary-button" bindtap="openProfile">查看服务状态</button></view>
+  <view wx:elif="{{homeError && !activeSession}}" class="home-gate"><text>暂时无法加载工作台</text><button class="secondary-button" bindtap="loadHome">重试</button></view>
+  <block wx:else>
+    <view wx:if="{{!hasStudents}}" class="home-gate"><text>还没有学生</text><button class="primary-button" bindtap="chooseStudent">添加学生</button></view>
+    <view wx:else class="day-focus {{nextLesson ? 'pressable course-focus' : ''}} {{focusAddress ? 'has-address' : ''}}" role="button" aria-label="{{nextLesson ? '查看当前课程详情' : '当天课程安排'}}" bindtap="openFocusLesson">
+      <image class="focus-art" src="/assets/images/agenda-soft-blush.jpg" mode="aspectFill" aria-hidden="true" />
+      <view class="focus-overline">
+        <view wx:if="{{nextLesson && !agendaLoading && !agendaError}}" class="focus-status-badge"><view class="focus-status-dot"></view><text>{{focusDayLabel}} {{dayLessons.length}} 节课程 · {{lessonInProgress ? '正在上课' : '即将上课'}}</text></view>
+        <block wx:else><view class="focus-date"><image src="/assets/icons/schedule-green.png" mode="aspectFit" /><text>{{selectedDate}}</text></view><text wx:if="{{!agendaLoading && !agendaError}}" class="focus-status">{{dayLessons.length ? '课程安排' : '无课日'}}</text></block>
+      </view>
+      <view class="focus-main">
+        <text class="focus-title">{{agendaError ? '课程暂不可用' : agendaLoading ? '正在查看安排' : nextLesson ? nextLesson.studentName + ' · ' + nextLesson.subject : overdueCount ? '还有课程待签到' : dayLessons.length ? '当天已无待上课程' : '当天没有课程'}}</text>
+        <view wx:if="{{nextLesson && focusAddress}}" class="focus-address"><image src="/assets/icons/map-pin-muted.png" mode="aspectFit" aria-hidden="true" /><text>{{focusAddress}}</text></view>
+        <text wx:if="{{nextLesson}}" class="focus-copy focus-countdown">{{lessonCountdown}}</text>
+        <text wx:elif="{{!agendaLoading && !agendaError && !dayLessons.length}}" class="focus-copy">这一天，留给自己</text>
+        <text wx:if="{{overdueCount}}" class="focus-copy focus-pending">{{overdueCount}} 节未签到课程待处理</text>
+        <view wx:if="{{nextLesson}}" class="focus-time-row"><view class="focus-time-track" role="progressbar" aria-label="课程时间进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{lessonProgress}}"><view style="width: {{lessonProgress}}%"></view></view><text>{{lessonInProgress ? lessonEndTime + ' 下课' : nextLesson.durationMinutes + ' 分钟'}}</text></view>
+      </view>
+      <view class="focus-footer">
+        <button wx:if="{{agendaError}}" class="focus-action" catchtap="loadAgenda">重新加载<image src="/assets/icons/refresh-green.png" /></button>
+        <view wx:elif="{{!agendaLoading && !agendaError && !dayLessons.length && cardMessage}}" class="focus-message"><image src="/assets/icons/{{cardMessageIcon}}-gold.png" mode="aspectFit" aria-hidden="true" /><text>{{cardMessage}}</text><image class="focus-footer-arrow" src="/assets/icons/right-muted.png" /></view>
+        <view wx:elif="{{nextLesson}}" class="focus-action">查看课程详情<image src="/assets/icons/right-green.png" /></view>
+      </view>
+    </view>
+    <view class="home-section-heading">教学事务</view>
+    <view class="teaching-list">
+      <view class="teaching-row pressable" role="button" bindtap="openSchedule"><view class="teaching-icon"><image src="/assets/icons/schedule-green.png" /></view><view><text>课程与签到</text><text>查看安排、改期与课程状态</text></view><image class="row-arrow" src="/assets/icons/right-muted.png" /></view>
+      <view class="teaching-row pressable" role="button" bindtap="openFeedbacks"><view class="teaching-icon"><image src="/assets/icons/feedback-green.png" /></view><view><text>课堂反馈</text><text>{{pendingFeedbacks ? pendingFeedbacks + ' 位学生有待处理内容' : '暂无待处理反馈'}}</text></view><image class="row-arrow" src="/assets/icons/right-muted.png" /></view>
+      <view class="teaching-row pressable" role="button" bindtap="chooseStudent"><view class="teaching-icon"><image src="/assets/icons/students-green.png" /></view><view><text>学生档案</text><text>{{students.length}} 位学生 · {{totalLessons}} 份课堂记录</text></view><image class="row-arrow" src="/assets/icons/right-muted.png" /></view>
+      <view class="teaching-row pressable" role="button" bindtap="openInsights"><view class="teaching-icon"><image src="/assets/icons/insights-green.png" /></view><view><text>数据洞察</text><text>授课、出勤与教学记录</text></view><image class="row-arrow" src="/assets/icons/right-muted.png" /></view>
+    </view>
+  </block>
+</view>
+<view wx:if="{{dayListMounted}}" class="day-list-mask {{dayListVisible ? 'is-open' : 'is-closing'}}" catchtouchmove="stopTap" bindtap="closeDayList">
+  <view class="day-list-sheet" catchtap="stopTap">
+    <view class="day-list-heading"><view><text>当天课程</text><text>{{popupDateLabel}}</text></view><view class="day-list-close" role="button" aria-label="关闭课程列表" bindtap="closeDayList">×</view></view>
+    <scroll-view wx:if="{{popupLessons.length}}" class="day-list-scroll" scroll-y="true">
+        <view wx:for="{{popupLessons}}" wx:key="id" class="day-list-item pressable" role="button" data-id="{{item.id}}" bindtap="openPopupLesson">
+        <view class="day-list-time"><text>{{item.time}}</text><text>{{item.durationMinutes}} 分钟</text></view>
+        <view class="day-list-course"><text>{{item.displayStudentName}}</text><text>{{item.displaySubject}}</text></view>
+        <text class="day-list-status">{{item.statusLabel}}</text><image src="/assets/icons/right-muted.png" />
+      </view>
+    </scroll-view>
+    <view wx:else class="day-list-empty">这一天没有安排课程</view>
+  </view>
+</view>
+<recording-float />
