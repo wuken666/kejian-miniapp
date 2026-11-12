@@ -136,9 +136,8 @@
 .course-confirm { background: #245e4e; color: #fff; }
 .course-restore { background: #edf4ef; color: #245e4e; }
 .course-confirm image, .course-restore image { width: 32rpx; height: 32rpx; }
-.course-record { display: flex; width: 100%; min-height: 82rpx; gap: 16rpx; align-items: center; padding: 0 18rpx; background: #f1f6f2; border-radius: 8rpx; font-size: 25rpx; font-weight: 600; }
-.course-record image { width: 34rpx; height: 34rpx; }
-.course-record .course-operation-arrow { margin-left: auto; width: 26rpx; height: 26rpx; }
+.course-record { display: flex; box-sizing: border-box; width: 100%; min-height: 104rpx; gap: 16rpx; align-items: center; justify-content: center; padding: 24rpx; background: #245e4e; color: #fff; border-radius: 12rpx; font-size: 30rpx; line-height: 1.4; font-weight: 650; }
+.course-record image { width: 38rpx; height: 38rpx; flex: 0 0 38rpx; }
 .course-operation-grid { display: flex; flex-wrap: wrap; gap: 0 24rpx; margin-top: 10rpx; }
 .course-operation { display: flex; width: calc((100% - 24rpx)/2); min-height: 94rpx; gap: 14rpx; align-items: center; justify-content: flex-start; border-bottom: 1rpx solid #ecf0ed; font-size: 24rpx; font-weight: 600; text-align: left; }
 .course-operation image { width: 31rpx; height: 31rpx; flex: 0 0 31rpx; }

@@ -3,6 +3,10 @@ const fs = require('fs')
 const path = require('path')
 const vm = require('vm')
 
+const scheduleMarkup = fs.readFileSync(path.join(__dirname, '../pages/schedule/index.wxml'), 'utf8')
+assert.match(scheduleMarkup, /bindtap="startRecord"><image src="\/assets\/icons\/record-white\.png"[^>]*\/><text>开始课堂录音<\/text>/)
+assert.ok(fs.existsSync(path.join(__dirname, '../assets/icons/record-white.png')))
+
 let definition
 let selectedStudentId
 let switchedTo

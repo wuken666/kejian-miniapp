@@ -81,7 +81,7 @@
     </view>
     <view class="course-section">
       <text class="course-section-title">课程操作</text>
-      <view role="button" wx:if="{{detail.status === 'COMPLETED'}}" class="course-record pressable" aria-disabled="{{saving}}" bindtap="startRecord"><image src="/assets/icons/record-green.png" mode="aspectFit" /><text>课程记录</text><image class="course-operation-arrow" src="/assets/icons/right-muted.png" mode="aspectFit" /></view>
+      <view role="button" wx:if="{{detail.status === 'COMPLETED'}}" class="course-record pressable" hover-class="pressable-active" aria-disabled="{{saving}}" bindtap="startRecord"><image src="/assets/icons/record-white.png" mode="aspectFit" /><text>开始课堂录音</text></view>
       <view class="course-operation-grid">
         <view role="button" wx:if="{{detail.status !== 'COMPLETED'}}" class="course-operation pressable" aria-disabled="{{saving}}" bindtap="openEdit"><image src="/assets/icons/edit-green.png" mode="aspectFit" /><text>编辑 / 改期</text></view>
         <view role="button" wx:if="{{detail.status === 'SCHEDULED'}}" class="course-operation pressable" aria-disabled="{{saving}}" data-status="LEAVE" bindtap="changeStatus"><image src="/assets/icons/students-green.png" mode="aspectFit" /><text>学生请假</text></view>
