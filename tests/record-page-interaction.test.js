@@ -867,12 +867,14 @@ async function discardsRecordingAndReturnsToCourse() {
   const originalDelete = api.deleteSession
   const originalClear = lessonRecorder.clearSession
   const originalWait = lessonRecorder.waitForUploads
+  const originalUploadPromise = lessonRecorder.uploadPromise
   const originalModal = sandbox.wx.showModal
   let deleted = null
   let cleared = null
   let closed = false
   const order = []
-  lessonRecorder.waitForUploads = async () => { order.push('uploads-finished') }
+  lessonRecorder.waitForUploads = async () => { throw new Error('upload pending') }
+  lessonRecorder.uploadPromise = Promise.resolve().then(() => { order.push('in-flight-finished') })
   api.deleteSession = async (id) => { order.push('delete'); deleted = id }
   lessonRecorder.clearSession = (id) => { cleared = id }
   sandbox.wx.showModal = (options) => { modalOptions = options }
@@ -888,7 +890,7 @@ async function discardsRecordingAndReturnsToCourse() {
     assert.equal(cleared, 51)
     assert.equal(context.workspaceFinished, true)
     assert.equal(closed, true)
-    assert.deepEqual(order, ['uploads-finished', 'delete'])
+    assert.deepEqual(order, ['in-flight-finished', 'delete'])
     api.deleteSession = async () => { throw new Error('offline') }
     closed = false
     context.data.activeSession = { id: 52 }
@@ -903,13 +905,15 @@ async function discardsRecordingAndReturnsToCourse() {
     api.deleteSession = async (id) => { deleted = id }
     context.discardWorkspace()
     await modalOptions.success({ confirm: true })
-    assert.equal(deleted, null)
-    assert.equal(context.data.activeSession.id, 52)
+    assert.equal(deleted, 52)
+    assert.equal(context.data.activeSession, null)
+    assert.equal(closed, true)
     console.log('PASS 放弃录音二次确认、清理后返回，删除失败保留课堂')
   } finally {
     api.deleteSession = originalDelete
     lessonRecorder.clearSession = originalClear
     lessonRecorder.waitForUploads = originalWait
+    lessonRecorder.uploadPromise = originalUploadPromise
     sandbox.wx.showModal = originalModal
   }
 }

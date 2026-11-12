@@ -926,7 +926,8 @@ Page({
         this.setData({ saving: true, processingText: '正在放弃录音…' })
         try {
           await lessonRecorder.stop('delete')
-          await lessonRecorder.waitForUploads()
+          // Wait only for an in-flight upload; abandoning must not require missing or queued audio to upload.
+          if (lessonRecorder.uploadPromise) await lessonRecorder.uploadPromise
           await api.deleteSession(session.id)
           lessonRecorder.clearSession(session.id)
           if (typeof saveRecordingWorkspace === 'function') saveRecordingWorkspace(null)
