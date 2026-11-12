@@ -1345,7 +1345,67 @@ async function preservesWebmContainerUntilNativeStop() {
   assert.equal(segment.byteLength, 1_000_000)
 }
 
+function backsOffStreamingFailuresAndReportsOnce() {
+  const connectSocket = wx.connectSocket
+  const reportClientError = api.reportClientError
+  const events = {}
+  let reports = 0
+  wx.connectSocket = () => ({
+    onOpen(handler) { events.open = handler },
+    onMessage() {},
+    onClose() {},
+    onError(handler) { events.error = handler },
+    close() {}
+  })
+  api.reportClientError = () => { reports += 1 }
+  const recorder = new LessonRecorder()
+  recorder.desiredRecording = true
+  try {
+    recorder.connectStreamingAsr()
+    events.error(new Error('socket unavailable'))
+    assert.equal(recorder.socketRetryTimer._idleTimeout, 2000)
+    clearTimeout(recorder.socketRetryTimer)
+    recorder.socketRetryTimer = null
+    recorder.connectStreamingAsr()
+    events.error(new Error('socket unavailable'))
+    assert.equal(recorder.socketRetryTimer._idleTimeout, 4000)
+    assert.equal(reports, 1)
+    events.open()
+    assert.equal(recorder.socketRetryCount, 0)
+    assert.equal(recorder.socketErrorReported, false)
+  } finally {
+    clearTimeout(recorder.socketRetryTimer)
+    recorder.desiredRecording = false
+    wx.connectSocket = connectSocket
+    api.reportClientError = reportClientError
+  }
+}
+
+function retriesFileCreationAfterStorageFailure() {
+  storage.clear()
+  files.clear()
+  const recorder = new LessonRecorder()
+  recorder.session = { id: 606, studentId: 1 }
+  const writeFileSync = recorder.fileSystem.writeFileSync
+  recorder.fileSystem.writeFileSync = () => {
+    throw new Error('writeFileSync:fail the maximum size of the file storage limit is exceeded')
+  }
+  assert.throws(() => recorder.ensureCurrentChunk(), /storage limit/)
+  assert.equal(recorder.currentChunk, null)
+  assert.ok(!getCurrentPcmChunk())
+  recorder.fileSystem.writeFileSync = writeFileSync
+  const chunk = recorder.ensureCurrentChunk()
+  assert.ok(files.has(chunk.filePath))
+  assert.equal(getCurrentPcmChunk().clientSegmentId, chunk.clientSegmentId)
+  storage.clear()
+  files.clear()
+}
+
 Promise.resolve()
+  .then(backsOffStreamingFailuresAndReportsOnce)
+  .then(() => console.log('PASS 实时识别连续失败时退避重连且只上报一次'))
+  .then(retriesFileCreationAfterStorageFailure)
+  .then(() => console.log('PASS 存储满导致创建失败后不会复用不存在的录音文件'))
   .then(preservesWebmContainerUntilNativeStop)
   .then(() => console.log('PASS WebM 音频不误判 PCM 噪声、不按 PCM 字节拆包或计算时长'))
   .then(stopsRetryingUndeclaredPrivacyScope)

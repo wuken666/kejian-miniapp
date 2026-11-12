@@ -189,6 +189,8 @@ class LessonRecorder {
     this.socketTask = null
     this.socketState = 'closed'
     this.socketRetryTimer = null
+    this.socketRetryCount = 0
+    this.socketErrorReported = false
     this.nativeRecoveryTimer = null
     this.nativeStartTimer = null
     this.nativeStartInFlight = false
@@ -728,7 +730,7 @@ class LessonRecorder {
     const sequenceNumber = this.nextSequence++
     const clientSegmentId = `wx-${this.session.id}-${Date.now()}-${sequenceNumber}`
     const filePath = `${wx.env.USER_DATA_PATH}/${clientSegmentId}.pcm`
-    this.currentChunk = {
+    const chunk = {
       sessionId: this.session.id,
       studentId: this.session.studentId,
       ...(isWechatAuthEnabled() ? { teacherId: this.sessionTeacherId } : {}),
@@ -739,8 +741,14 @@ class LessonRecorder {
       createdAt: Date.now()
     }
     // 先登记检查点再创建文件，进程恰好在文件写入后退出时仍能找到这段尾音。
-    saveCurrentPcmChunk(this.currentChunk)
-    this.fileSystem.writeFileSync(filePath, new ArrayBuffer(0))
+    saveCurrentPcmChunk(chunk)
+    try {
+      this.fileSystem.writeFileSync(filePath, new ArrayBuffer(0))
+    } catch (error) {
+      if (!fileExists(filePath)) saveCurrentPcmChunk(null)
+      throw error
+    }
+    this.currentChunk = chunk
     return this.currentChunk
   }
 
@@ -1060,6 +1068,8 @@ class LessonRecorder {
     socketTask.onOpen(() => {
       if (this.socketTask !== socketTask) return
       this.socketState = 'connected'
+      this.socketRetryCount = 0
+      this.socketErrorReported = false
       this.emit()
     })
     socketTask.onMessage((event) => {
@@ -1086,7 +1096,10 @@ class LessonRecorder {
     socketTask.onError((error) => {
       if (this.socketTask !== socketTask) return
       this.socketState = 'unavailable'
-      api.reportClientError('streaming_asr', 'wechat_socket', error)
+      if (!this.socketErrorReported) {
+        this.socketErrorReported = true
+        api.reportClientError('streaming_asr', 'wechat_socket', error)
+      }
       this.scheduleStreamingReconnect()
       this.emit()
     })
@@ -1095,10 +1108,11 @@ class LessonRecorder {
   // 录音仍在进行时自动恢复字幕连接，不向老师暴露瞬时网络错误。
   scheduleStreamingReconnect() {
     if (!this.desiredRecording || this.socketRetryTimer) return
+    const retryDelay = Math.min(SOCKET_RETRY_DELAY_MS * (2 ** Math.min(this.socketRetryCount++, 4)), 30_000)
     this.socketRetryTimer = setTimeout(() => {
       this.socketRetryTimer = null
       if (this.desiredRecording && this.socketState !== 'connected') this.connectStreamingAsr()
-    }, SOCKET_RETRY_DELAY_MS)
+    }, retryDelay)
   }
 
   sendStreamingFrame(frameBuffer) {
