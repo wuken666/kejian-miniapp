@@ -22,7 +22,7 @@
       </view>
       <view class="focus-footer">
         <button wx:if="{{agendaError}}" class="focus-action" catchtap="loadAgenda">重新加载<image src="/assets/icons/refresh-green.png" /></button>
-        <view wx:elif="{{!agendaLoading && !agendaError && !dayLessons.length && cardMessage}}" class="focus-message"><image src="/assets/icons/{{cardMessageIcon}}-gold.png" mode="aspectFit" aria-hidden="true" /><text>{{cardMessage}}</text><image class="focus-footer-arrow" src="/assets/icons/right-muted.png" /></view>
+        <view wx:elif="{{!agendaLoading && !agendaError && !nextLesson && cardMessage}}" class="focus-message"><image src="/assets/icons/{{cardMessageIcon}}-gold.png" mode="aspectFit" aria-hidden="true" /><text>{{cardMessage}}</text><image class="focus-footer-arrow" src="/assets/icons/right-muted.png" /></view>
         <view wx:elif="{{nextLesson}}" class="focus-action">查看课程详情<image src="/assets/icons/right-green.png" /></view>
       </view>
     </view>
