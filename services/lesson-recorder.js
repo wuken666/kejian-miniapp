@@ -1,4 +1,5 @@
 const { api } = require('../utils/api')
+const { usesCloudTransport, connectCloudSocket } = require('../utils/cloud-transport')
 const {
   getAsrWebSocketUrl,
   getServiceAccessToken,
@@ -1060,10 +1061,33 @@ class LessonRecorder {
     const url = query ? `${baseUrl}${separator}${query}` : baseUrl
     this.socketState = 'connecting'
     const authToken = getAuthToken()
+    if (usesCloudTransport()) {
+      const attempt = {}
+      this.socketAttempt = attempt
+      const path = `/asr-stream${query ? '?' + query : ''}`
+      connectCloudSocket(path, authToken ? { Authorization: `Bearer ${authToken}` } : {}).then(socketTask => {
+        if (this.socketAttempt !== attempt || !this.desiredRecording) { socketTask.close(); return }
+        this.attachStreamingSocket(socketTask)
+      }).catch(error => {
+        if (this.socketAttempt !== attempt || !this.desiredRecording) return
+        this.socketState = 'unavailable'
+        if (!this.socketErrorReported) {
+          this.socketErrorReported = true
+          api.reportClientError('streaming_asr', 'cloud_socket', error)
+        }
+        this.scheduleStreamingReconnect()
+        this.emit()
+      })
+      return
+    }
     const socketTask = wx.connectSocket({
       url,
       header: authToken ? { Authorization: `Bearer ${authToken}` } : {}
     })
+    this.attachStreamingSocket(socketTask)
+  }
+
+  attachStreamingSocket(socketTask) {
     this.socketTask = socketTask
     socketTask.onOpen(() => {
       if (this.socketTask !== socketTask) return
@@ -1202,6 +1226,7 @@ class LessonRecorder {
   }
 
   closeStreamingAsr() {
+    this.socketAttempt = null
     if (this.socketRetryTimer) clearTimeout(this.socketRetryTimer)
     this.socketRetryTimer = null
     const task = this.socketTask

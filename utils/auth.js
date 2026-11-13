@@ -11,6 +11,7 @@ const {
 } = require('./store')
 
 const USER_ERROR_MESSAGE = '系统异常，请联系管理员'
+const { serviceRequest } = require('./cloud-transport')
 let loginPromise = null
 
 // 登录态变化后通知录音单例重新校验本地课堂归属，避免换老师时误用旧队列。
@@ -40,7 +41,7 @@ function loginWithWechat() {
           reject(new Error(USER_ERROR_MESSAGE))
           return
         }
-        wx.request({
+        serviceRequest({
           url: `${getApiBaseUrl()}/auth/wechat/login`,
           method: 'POST',
           data: { code },
@@ -112,7 +113,7 @@ function logout() {
     return Promise.resolve()
   }
   return new Promise((resolve) => {
-    wx.request({
+    serviceRequest({
       url: `${getApiBaseUrl()}/auth/logout`,
       method: 'POST',
       header: { Authorization: `Bearer ${token}` },

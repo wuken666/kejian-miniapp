@@ -1,6 +1,7 @@
 const { getApiBaseUrl, getServiceAccessToken, isWechatAuthEnabled } = require('./config')
 const { getAuthToken, clearAuthSession, getRecordingOwnerToken } = require('./store')
 const { ensureAuthenticated, notifyAuthScopeChanged } = require('./auth')
+const { serviceRequest, usesCloudTransport, uploadCloudAudio } = require('./cloud-transport')
 
 const USER_ERROR_MESSAGE = '系统异常，请联系管理员'
 
@@ -46,7 +47,7 @@ function serviceHeader(header = {}) {
 // 封装微信网络请求并统一解析 Java 后端错误。
 function request(path, options = {}) {
   return ensureAuthenticated().then(() => new Promise((resolve, reject) => {
-      wx.request({
+      serviceRequest({
         url: `${getApiBaseUrl()}${path}`,
         method: options.method || 'GET',
         data: options.data,
@@ -89,6 +90,17 @@ function recordingControlOptions(capturedSeconds, confirmPartialAudio = false) {
 
 // 上传本地持久化的 PCM 片段；服务端按 clientSegmentId 保证幂等。
 function uploadAudioSegment(sessionId, segment, authRetried = false) {
+  if (usesCloudTransport()) {
+    return ensureAuthenticated().then(async () => {
+      const teacher = require('./store').getTeacherProfile()
+      const downloadUrl = await uploadCloudAudio(sessionId, segment, teacher && teacher.id)
+      return request(`/lesson-sessions/${sessionId}/cloud-audio-segments`, {
+        method: 'POST', header: { ...ownerHeader(), 'Content-Type': 'application/json' },
+        data: { clientSegmentId: segment.clientSegmentId, sequenceNumber: segment.sequenceNumber,
+          durationSeconds: segment.durationSeconds, downloadUrl }, timeout: 90_000
+      })
+    })
+  }
   return ensureAuthenticated().then(() => new Promise((resolve, reject) => {
     wx.uploadFile({
       url: `${getApiBaseUrl()}/lesson-sessions/${sessionId}/audio-segments`,
