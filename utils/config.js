@@ -97,6 +97,9 @@ function getApiBaseUrl() {
   const development = developmentUrls()
   if (development) return development.apiBaseUrl
   const runtimeUrls = urlsFromPublicOrigin(runtimeConfig.publicOrigin)
+  if (['trial', 'release'].includes(getMiniProgramEnvVersion())) {
+    return (runtimeUrls || configuredUrls()).apiBaseUrl
+  }
   return String(wx.getStorageSync(API_BASE_STORAGE_KEY)
     || runtimeUrls && runtimeUrls.apiBaseUrl
     || configuredUrls().apiBaseUrl).replace(/\/$/, '')
@@ -107,6 +110,9 @@ function getAsrWebSocketUrl() {
   const development = developmentUrls()
   if (development) return development.asrWebSocketUrl
   const runtimeUrls = urlsFromPublicOrigin(runtimeConfig.publicOrigin)
+  if (['trial', 'release'].includes(getMiniProgramEnvVersion())) {
+    return (runtimeUrls || configuredUrls()).asrWebSocketUrl
+  }
   return String(wx.getStorageSync(ASR_WS_STORAGE_KEY)
     || runtimeUrls && runtimeUrls.asrWebSocketUrl
     || configuredUrls().asrWebSocketUrl)

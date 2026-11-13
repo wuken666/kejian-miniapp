@@ -92,3 +92,14 @@ assert.notEqual(getApiBaseUrl(), 'http://192.168.10.18:8080/api')
 global.wx.getAccountInfoSync = () => ({ miniProgram: { envVersion: 'trial' } })
 assert.notEqual(getAsrWebSocketUrl(), 'ws://192.168.10.18:8090/ws/transcribe')
 console.log('PASS 局域网微信登录仅在开发版启用，体验版和正式版不使用开发地址')
+
+runtimeConfig.publicOrigin = 'https://production.example.com'
+storage.set('keban-api-base-url', 'http://192.168.10.18:8080/api')
+storage.set('keban-asr-ws-url', 'ws://127.0.0.1:8090/ws/transcribe')
+for (const envVersion of ['trial', 'release']) {
+  global.wx.getAccountInfoSync = () => ({ miniProgram: { envVersion } })
+  assert.equal(getApiBaseUrl(), 'https://production.example.com/api')
+  assert.equal(getAsrWebSocketUrl(), 'wss://production.example.com/asr-stream')
+  assert.equal(getDeploymentMode(), 'wechat')
+}
+console.log('PASS 体验版和正式版忽略历史调试地址缓存')
